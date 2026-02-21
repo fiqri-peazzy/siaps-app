@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('pekerjaan', \App\Http\Controllers\Admin\MasterPekerjaanController::class);
         Route::resource('jabatan', \App\Http\Controllers\Admin\MasterJabatanController::class);
         Route::resource('pejabat-desa', \App\Http\Controllers\Admin\PejabatDesaController::class);
+        Route::resource('penduduk', \App\Http\Controllers\Admin\PendudukController::class);
+        Route::resource('priority-bobot', \App\Http\Controllers\Admin\PriorityBobotController::class);
     });
 });
 
