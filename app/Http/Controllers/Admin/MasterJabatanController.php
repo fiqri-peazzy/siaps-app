@@ -9,9 +9,12 @@ use App\Models\MasterJabatan;
 
 class MasterJabatanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $jabatans = MasterJabatan::orderBy('urutan')->get();
+        $search = $request->get('search');
+        $jabatans = MasterJabatan::when($search, fn($q) => $q->where('nama_jabatan', 'like', "%{$search}%")
+            ->orWhere('singkatan', 'like', "%{$search}%"))
+            ->orderBy('urutan')->get();
         return view('admin.master.jabatan.index', compact('jabatans'));
     }
 

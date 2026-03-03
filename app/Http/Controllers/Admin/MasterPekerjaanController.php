@@ -9,9 +9,12 @@ use App\Models\MasterPekerjaan;
 
 class MasterPekerjaanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pekerjaans = MasterPekerjaan::orderBy('nama')->get();
+        $search = $request->get('search');
+        $pekerjaans = MasterPekerjaan::when($search, fn($q) => $q->where('nama', 'like', "%{$search}%")
+            ->orWhere('kode', 'like', "%{$search}%"))
+            ->orderBy('nama')->get();
         return view('admin.master.pekerjaan.index', compact('pekerjaans'));
     }
 

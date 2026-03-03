@@ -11,9 +11,13 @@ use App\Models\MasterJabatan;
 
 class PejabatDesaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pejabats = PejabatDesa::with(['user', 'jabatan'])->get();
+        $search = $request->get('search');
+        $pejabats = PejabatDesa::with(['user', 'jabatan'])
+            ->when($search, fn($q) => $q->whereHas('user', fn($u) => $u->where('name', 'like', "%{$search}%"))
+                ->orWhere('nip', 'like', "%{$search}%"))
+            ->get();
         $users = User::whereIn('role', ['admin', 'kepala_desa'])->orderBy('name')->get();
         $jabatans = MasterJabatan::orderBy('urutan')->get();
 

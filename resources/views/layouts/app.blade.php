@@ -157,6 +157,12 @@
                 </div>
             @endif
 
+            @if (isset($header))
+                <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                    {{ $header }}
+                </div>
+            @endif
+
             {{ $slot }}
         </div>
     </div>

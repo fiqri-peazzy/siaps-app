@@ -9,9 +9,11 @@ use App\Models\MasterAgama;
 
 class MasterAgamaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $agamas = MasterAgama::orderBy('nama')->get();
+        $search = $request->get('search');
+        $agamas = MasterAgama::when($search, fn($q) => $q->where('nama', 'like', "%{$search}%"))
+            ->orderBy('nama')->get();
         return view('admin.master.agama.index', compact('agamas'));
     }
 

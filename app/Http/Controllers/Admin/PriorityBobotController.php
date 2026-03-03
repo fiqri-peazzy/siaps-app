@@ -9,9 +9,13 @@ use App\Models\PriorityBobot;
 
 class PriorityBobotController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $bobots = PriorityBobot::orderBy('kategori')->orderBy('kode')->get();
+        $search = $request->get('search');
+        $bobots = PriorityBobot::when($search, fn($q) => $q->where('kategori', 'like', "%{$search}%")
+            ->orWhere('label', 'like', "%{$search}%")
+            ->orWhere('kode', 'like', "%{$search}%"))
+            ->orderBy('kategori')->orderBy('kode')->get();
         return view('admin.master.priority-bobot.index', compact('bobots'));
     }
 
