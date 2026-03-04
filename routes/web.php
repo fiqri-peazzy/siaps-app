@@ -1,22 +1,62 @@
 <?php
 
+use App\Http\Controllers\Auth\PhoneAuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', [PublicController::class, 'index'])->name('home');
+Route::get('/profil-desa', [PublicController::class, 'profil'])->name('public.profil');
+Route::get('/layanan', [PublicController::class, 'layanan'])->name('public.layanan');
+Route::get('/informasi', [PublicController::class, 'informasi'])->name('public.informasi');
+Route::get('/informasi/{slug}', [PublicController::class, 'showInformasi'])->name('public.informasi.show');
+
+/*
+|--------------------------------------------------------------------------
+| Auth Masyarakat (Phone + OTP)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('guest')->prefix('login')->name('auth.')->group(function () {
+    Route::get('/phone', [PhoneAuthController::class, 'showPhoneForm'])->name('phone');
+    Route::post('/send-otp', [PhoneAuthController::class, 'sendOtp'])->name('otp.send');
+    Route::get('/verify', [PhoneAuthController::class, 'showOtpForm'])->name('otp.form');
+    Route::post('/verify', [PhoneAuthController::class, 'verifyOtp'])->name('otp.verify');
+    Route::post('/resend', [PhoneAuthController::class, 'resendOtp'])->name('otp.resend');
+    Route::post('/logout', [PhoneAuthController::class, 'logout'])->name('logout')->withoutMiddleware('guest')->middleware('auth');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+/*
+|--------------------------------------------------------------------------
+| Masyarakat Dashboard (Authenticated)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'masyarakat'])->prefix('akun')->name('masyarakat.')->group(function () {
+    Route::get('/home', function () {
+        return view('masyarakat.home');
+    })->name('home');
+});
 
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Admin Master Data Routes
+    // Admin Master Data
     Route::prefix('admin/master')->name('admin.master.')->group(function () {
         Route::resource('jenis-surat', \App\Http\Controllers\Admin\JenisSuratController::class);
         Route::resource('wilayah', \App\Http\Controllers\Admin\MasterWilayahController::class);
@@ -26,6 +66,13 @@ Route::middleware('auth')->group(function () {
         Route::resource('pejabat-desa', \App\Http\Controllers\Admin\PejabatDesaController::class);
         Route::resource('penduduk', \App\Http\Controllers\Admin\PendudukController::class);
         Route::resource('priority-bobot', \App\Http\Controllers\Admin\PriorityBobotController::class);
+    });
+
+    // Admin CMS
+    Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
+        Route::get('profil-desa', [\App\Http\Controllers\Admin\ProfilDesaController::class, 'index'])->name('profil-desa.index');
+        Route::put('profil-desa', [\App\Http\Controllers\Admin\ProfilDesaController::class, 'update'])->name('profil-desa.update');
+        Route::resource('informasi', \App\Http\Controllers\Admin\InformasiDesaController::class);
     });
 });
 
