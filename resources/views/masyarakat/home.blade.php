@@ -15,7 +15,7 @@
         </div>
 
         <div class="grid sm:grid-cols-2 gap-6 mb-8">
-            <a href="{{ route('public.layanan') }}"
+            <a href="{{ route('masyarakat.pengajuan.index') }}"
                 class="group bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 hover:border-blue-200 dark:hover:border-blue-700 hover:shadow-lg transition-all hover:-translate-y-1">
                 <div class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl w-fit mb-4">
                     <x-icon name="file-text" class="w-7 h-7" />

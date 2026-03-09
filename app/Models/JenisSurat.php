@@ -25,4 +25,14 @@ class JenisSurat extends Model
         'requires_verification' => 'boolean',
         'is_active' => 'boolean',
     ];
+
+    public function fields()
+    {
+        return $this->hasMany(JenisSuratField::class)->orderBy('urutan');
+    }
+
+    public function syarat()
+    {
+        return $this->hasMany(SyaratSurat::class);
+    }
 }

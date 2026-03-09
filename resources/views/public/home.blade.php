@@ -28,7 +28,7 @@
                             digital — cepat, mudah, dan transparan.</p>
                     @endif
                     <div class="flex flex-wrap gap-4">
-                        <a href="{{ route('auth.phone') }}"
+                        <a href="{{ Auth::check() && Auth::user()->role === 'masyarakat' ? route('masyarakat.pengajuan.index') : route('auth.phone') }}"
                             class="inline-flex items-center gap-2 px-6 py-3.5 bg-white text-blue-700 font-bold rounded-2xl hover:bg-yellow-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -124,7 +124,7 @@
                                 </svg>
                                 SLA {{ $s->sla_hari }} hari kerja
                             </span>
-                            <a href="{{ route('auth.phone') }}"
+                            <a href="{{ Auth::check() && Auth::user()->role === 'masyarakat' ? route('masyarakat.pengajuan.create', $s->kode) : route('auth.phone') }}"
                                 class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">Ajukan
                                 →</a>
                         </div>
@@ -132,7 +132,7 @@
                 @endforeach
             </div>
             <div class="text-center mt-8">
-                <a href="{{ route('public.layanan') }}"
+                <a href="{{ Auth::check() && Auth::user()->role === 'masyarakat' ? route('masyarakat.pengajuan.index') : route('public.layanan') }}"
                     class="inline-flex items-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 font-semibold rounded-xl hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all">
                     Lihat Semua Layanan
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -250,7 +250,7 @@
             <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Butuh Surat Keterangan?</h2>
             <p class="text-blue-100 text-lg mb-8">Ajukan secara online tanpa perlu antri. Proseskan dari rumah kapan
                 saja dan di mana saja.</p>
-            <a href="{{ route('auth.phone') }}"
+            <a href="{{ Auth::check() && Auth::user()->role === 'masyarakat' ? route('masyarakat.pengajuan.index') : route('auth.phone') }}"
                 class="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-700 font-bold rounded-2xl hover:bg-yellow-50 transition-all shadow-lg hover:shadow-xl text-base">
                 Mulai Sekarang — Gratis
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

@@ -41,6 +41,18 @@ Route::middleware(['auth', 'masyarakat'])->prefix('akun')->name('masyarakat.')->
     Route::get('/home', function () {
         return view('masyarakat.home');
     })->name('home');
+
+    // Biodata
+    Route::get('/profile', [\App\Http\Controllers\Masyarakat\BiodataController::class, 'index'])->name('profile');
+    Route::post('/profile', [\App\Http\Controllers\Masyarakat\BiodataController::class, 'update'])->name('profile.update');
+
+    // Pengajuan Surat
+    Route::prefix('pengajuan')->name('pengajuan.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'index'])->name('index');
+        Route::get('/tambah/{jenis_surat:kode}', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'create'])->name('create');
+        Route::post('/tambah/{jenis_surat:kode}', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'store'])->name('store');
+        Route::get('/{pengajuan:kode_pengajuan}', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'show'])->name('show');
+    });
 });
 
 /*
