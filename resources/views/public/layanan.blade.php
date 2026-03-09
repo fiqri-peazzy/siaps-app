@@ -12,12 +12,15 @@
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         @if ($layanan->count() > 0)
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @php $icons = ['📄','📋','📑','🏠','👶','💒','📜','🗂️','🏥','💼','🎓','⚖️']; @endphp
+                @php $icons = ['file-text', 'clipboard-list', 'files', 'home', 'baby', 'heart', 'scroll', 'folder-kanban', 'hospital', 'briefcase', 'graduation-cap', 'scale']; @endphp
                 @foreach ($layanan as $i => $s)
                     <div
                         class="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 dark:hover:border-indigo-700">
                         <div class="flex items-start gap-4 mb-4">
-                            <div class="text-3xl">{{ $icons[$i % count($icons)] }}</div>
+                            <div
+                                class="p-3 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-xl">
+                                <x-icon name="{{ $icons[$i % count($icons)] }}" class="w-7 h-7" />
+                            </div>
                             <div>
                                 <span
                                     class="text-xs font-mono bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded">{{ $s->kode }}</span>
@@ -49,7 +52,9 @@
             </div>
         @else
             <div class="text-center py-20">
-                <p class="text-5xl mb-4">📭</p>
+                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl w-fit mx-auto mb-4 text-gray-400">
+                    <x-icon name="inbox" class="w-12 h-12" />
+                </div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Belum ada layanan tersedia</h3>
                 <p class="text-gray-500 dark:text-gray-400">Layanan akan segera ditambahkan oleh admin.</p>
             </div>

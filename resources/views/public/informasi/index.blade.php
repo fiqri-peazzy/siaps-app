@@ -43,8 +43,9 @@
                         @else
                             <div
                                 class="aspect-video bg-gradient-to-br from-green-100 to-teal-100 dark:from-green-900/30 dark:to-teal-900/30 flex items-center justify-center">
-                                <span
-                                    class="text-5xl">{{ match ($artikel->kategori) {'pengumuman' => '📢','agenda' => '📅','layanan' => '🗂️',default => '📰'} }}</span>
+                                <x-icon
+                                    name="{{ match ($artikel->kategori) {'pengumuman' => 'megaphone','agenda' => 'calendar','layanan' => 'folder-kanban',default => 'newspaper'} }}"
+                                    class="w-12 h-12 text-green-400 dark:text-green-500" />
                             </div>
                         @endif
                         <div class="p-5">
@@ -53,7 +54,7 @@
                                     class="px-2.5 py-1 text-xs font-semibold rounded-full
                             {{ match ($artikel->kategori) {'pengumuman' => 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400','berita' => 'bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400','agenda' => 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400',default => 'bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400'} }}">{{ $artikel->kategori_label }}</span>
                                 @if ($artikel->is_pinned)
-                                    <span class="text-yellow-500 text-xs">📌</span>
+                                    <x-icon name="pin" class="w-3 h-3 text-yellow-500 fill-yellow-500" />
                                 @endif
                             </div>
                             <h3
@@ -71,7 +72,9 @@
             <div class="mt-10">{{ $berita->links() }}</div>
         @else
             <div class="text-center py-20">
-                <p class="text-5xl mb-4">📭</p>
+                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl w-fit mx-auto mb-4 text-gray-400">
+                    <x-icon name="inbox" class="w-12 h-12" />
+                </div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Belum ada informasi</h3>
                 <p class="text-gray-500 dark:text-gray-400">Informasi akan segera ditambahkan oleh admin.</p>
             </div>

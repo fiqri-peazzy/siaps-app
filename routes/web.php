@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\PhoneAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,9 @@ Route::middleware(['auth', 'masyarakat'])->prefix('akun')->name('masyarakat.')->
 */
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
+        if (Auth::user()->role === 'masyarakat') {
+            return redirect()->route('masyarakat.home');
+        }
         return view('dashboard');
     })->name('dashboard');
 

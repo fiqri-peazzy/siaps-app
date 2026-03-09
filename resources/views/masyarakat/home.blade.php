@@ -4,7 +4,9 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-8 text-white mb-8 shadow-xl">
             <div class="flex items-center gap-4">
-                <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-3xl">👤</div>
+                <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center text-white">
+                    <x-icon name="briefcase" class="w-8 h-8" />
+                </div>
                 <div>
                     <h1 class="text-2xl font-bold">Halo, {{ Auth::user()->name }}!</h1>
                     <p class="text-blue-200 text-sm mt-1">{{ Auth::user()->phone }} · Akun Warga</p>
@@ -15,7 +17,9 @@
         <div class="grid sm:grid-cols-2 gap-6 mb-8">
             <a href="{{ route('public.layanan') }}"
                 class="group bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 hover:border-blue-200 dark:hover:border-blue-700 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-3xl mb-3">📋</div>
+                <div class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl w-fit mb-4">
+                    <x-icon name="file-text" class="w-7 h-7" />
+                </div>
                 <h3
                     class="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                     Ajukan Surat Baru</h3>
@@ -24,7 +28,9 @@
             </a>
             <div
                 class="bg-gray-50 dark:bg-gray-900/50 rounded-2xl p-6 border border-dashed border-gray-200 dark:border-gray-700">
-                <div class="text-3xl mb-3">📬</div>
+                <div class="p-3 bg-gray-100 dark:bg-gray-800 text-gray-400 rounded-xl w-fit mb-4">
+                    <x-icon name="inbox" class="w-7 h-7" />
+                </div>
                 <h3 class="font-bold text-gray-500 dark:text-gray-400 mb-1">Status Pengajuan</h3>
                 <p class="text-sm text-gray-400 dark:text-gray-500">Fitur pelacakan status pengajuan akan segera
                     tersedia</p>

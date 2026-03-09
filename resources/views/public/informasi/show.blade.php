@@ -16,7 +16,9 @@
             <span
                 class="px-3 py-1 bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-sm font-semibold rounded-full">{{ $artikel->kategori_label }}</span>
             @if ($artikel->is_pinned)
-                <span class="text-yellow-500 text-sm">📌 Dipin</span>
+                <span class="flex items-center gap-1.5 text-yellow-600 dark:text-yellow-400 text-sm font-medium">
+                    <x-icon name="pin" class="w-4 h-4 fill-yellow-500" /> Dipin
+                </span>
             @endif
         </div>
 

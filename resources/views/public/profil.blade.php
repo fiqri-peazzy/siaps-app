@@ -39,19 +39,20 @@
 
                     <div class="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-800">
                         @if ($profil->alamat_kantor)
-                            <div class="flex gap-3 text-sm"><span class="text-blue-500 mt-0.5">📍</span><span
+                            <div class="flex gap-3 text-sm"><x-icon name="map-pin"
+                                    class="text-blue-500 w-4 h-4 mt-0.5" /><span
                                     class="text-gray-600 dark:text-gray-400">{{ $profil->alamat_kantor }}</span></div>
                         @endif
                         @if ($profil->telepon)
-                            <div class="flex gap-3 text-sm"><span class="text-blue-500">📞</span><span
+                            <div class="flex gap-3 text-sm"><x-icon name="phone" class="text-blue-500 w-4 h-4" /><span
                                     class="text-gray-600 dark:text-gray-400">{{ $profil->telepon }}</span></div>
                         @endif
                         @if ($profil->email)
-                            <div class="flex gap-3 text-sm"><span class="text-blue-500">✉️</span><span
+                            <div class="flex gap-3 text-sm"><x-icon name="mail" class="text-blue-500 w-4 h-4" /><span
                                     class="text-gray-600 dark:text-gray-400">{{ $profil->email }}</span></div>
                         @endif
                         @if ($profil->website)
-                            <div class="flex gap-3 text-sm"><span class="text-blue-500">🌐</span><a
+                            <div class="flex gap-3 text-sm"><x-icon name="globe" class="text-blue-500 w-4 h-4" /><a
                                     href="{{ $profil->website }}"
                                     class="text-blue-600 hover:underline">{{ $profil->website }}</a></div>
                         @endif
@@ -89,7 +90,7 @@
                     <div
                         class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8 border border-blue-100 dark:border-blue-800">
                         <h3 class="text-xl font-bold text-blue-800 dark:text-blue-300 mb-4 flex items-center gap-2">
-                            <span class="text-2xl">🎯</span> Visi
+                            <x-icon name="target" class="w-6 h-6" /> Visi
                         </h3>
                         <p class="text-gray-700 dark:text-gray-300 leading-relaxed italic text-lg">
                             "{{ $profil->visi }}"</p>
@@ -100,7 +101,7 @@
                     <div
                         class="bg-white dark:bg-gray-900 rounded-2xl p-8 border border-gray-100 dark:border-gray-800 shadow-sm">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                            <span class="text-2xl">🚀</span> Misi
+                            <x-icon name="rocket" class="w-6 h-6 text-indigo-500" /> Misi
                         </h3>
                         <div
                             class="prose prose-sm dark:prose-invert max-w-none text-gray-600 dark:text-gray-400 leading-relaxed">

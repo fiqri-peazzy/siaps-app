@@ -88,12 +88,26 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @php
-                    $icons = ['📄', '📋', '📑', '🏠', '👶', '💒', '📜', '🗂️', '🏥', '💼'];
+                    $icons = [
+                        'file-text',
+                        'clipboard-list',
+                        'files',
+                        'home',
+                        'baby',
+                        'heart',
+                        'scroll',
+                        'folder-kanban',
+                        'hospital',
+                        'briefcase',
+                    ];
                 @endphp
                 @foreach ($layanan as $i => $s)
                     <div
                         class="group bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 hover:border-blue-200 dark:hover:border-blue-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                        <div class="text-3xl mb-4">{{ $icons[$i % count($icons)] }}</div>
+                        <div
+                            class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl w-fit mb-4">
+                            <x-icon name="{{ $icons[$i % count($icons)] }}" class="w-7 h-7" />
+                        </div>
                         <h3
                             class="font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                             {{ $s->nama }}</h3>
@@ -142,22 +156,22 @@
                 @php
                     $steps = [
                         [
-                            'icon' => '📱',
+                            'icon' => 'smartphone',
                             'title' => '1. Daftar / Login',
                             'desc' => 'Masukkan nomor HP dan verifikasi dengan kode OTP yang dikirim ke WhatsApp Anda.',
                         ],
                         [
-                            'icon' => '📋',
+                            'icon' => 'clipboard-list',
                             'title' => '2. Pilih Layanan',
                             'desc' => 'Pilih jenis surat yang dibutuhkan dari daftar layanan yang tersedia.',
                         ],
                         [
-                            'icon' => '📤',
+                            'icon' => 'send',
                             'title' => '3. Isi & Kirim',
                             'desc' => 'Lengkapi formulir dan unggah dokumen persyaratan yang diperlukan.',
                         ],
                         [
-                            'icon' => '📬',
+                            'icon' => 'package',
                             'title' => '4. Terima Surat',
                             'desc' => 'Pantau status pengajuan dan unduh surat yang sudah terbit.',
                         ],
@@ -165,7 +179,10 @@
                 @endphp
                 @foreach ($steps as $step)
                     <div class="text-center">
-                        <div class="text-4xl mb-4">{{ $step['icon'] }}</div>
+                        <div
+                            class="w-16 h-16 bg-white dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100 dark:border-gray-800 text-indigo-600 dark:text-indigo-400">
+                            <x-icon name="{{ $step['icon'] }}" class="w-8 h-8" />
+                        </div>
                         <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ $step['title'] }}</h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{{ $step['desc'] }}</p>
                     </div>
@@ -199,7 +216,8 @@
                         @else
                             <div
                                 class="aspect-video bg-gradient-to-br from-blue-100 to-indigo-200 dark:from-blue-900/30 dark:to-indigo-900/30 flex items-center justify-center">
-                                <span class="text-5xl">{{ $artikel->kategori === 'pengumuman' ? '📢' : '📰' }}</span>
+                                <x-icon name="{{ $artikel->kategori === 'pengumuman' ? 'megaphone' : 'newspaper' }}"
+                                    class="w-12 h-12 text-blue-400 dark:text-blue-500" />
                             </div>
                         @endif
                         <div class="p-5">
