@@ -60,6 +60,68 @@
                             </path>
                         </svg>
                     </button>
+
+                    <!-- Notifications -->
+                    <div class="relative ms-3">
+                        <button type="button" data-dropdown-toggle="dropdown-notification"
+                            class="relative inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
+                                </path>
+                            </svg>
+                            @php
+                                $unreadNotificationsCount = auth()->user()->unreadNotifications->count();
+                            @endphp
+                            @if ($unreadNotificationsCount > 0)
+                                <div
+                                    class="absolute inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -end-1 dark:border-gray-800">
+                                    {{ $unreadNotificationsCount > 9 ? '9+' : $unreadNotificationsCount }}
+                                </div>
+                            @endif
+                        </button>
+                        <!-- Dropdown menu -->
+                        <div id="dropdown-notification"
+                            class="z-50 hidden max-w-sm my-4 overflow-hidden text-base list-none bg-white divide-y divide-gray-100 rounded shadow-lg dark:bg-gray-700 dark:divide-gray-600">
+                            <div
+                                class="block px-4 py-2 font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                Notifikasi
+                            </div>
+                            <div class="divide-y divide-gray-100 dark:divide-gray-600 max-h-96 overflow-y-auto">
+                                @forelse(auth()->user()->notifications->take(5) as $notification)
+                                    <a href="{{ $notification->data['action_url'] ?? '#' }}"
+                                        class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <div class="flex-shrink-0 text-blue-600 dark:text-blue-500">
+                                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="w-full ps-3">
+                                            <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400">
+                                                <span
+                                                    class="font-semibold text-gray-900 dark:text-white">{{ $notification->data['title'] }}</span>:
+                                                {{ $notification->data['message'] }}
+                                            </div>
+                                            <div class="text-xs text-blue-600 dark:text-blue-500">
+                                                {{ $notification->created_at->diffForHumans() }}</div>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <div class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
+                                        Tidak ada notifikasi baru.
+                                    </div>
+                                @endforelse
+                            </div>
+                            <a href="#"
+                                class="block py-2 text-sm font-medium text-center text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:underline">
+                                Lihat Semua
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="flex items-center ms-3">
                         <div>
                             <button type="button"
@@ -125,8 +187,8 @@
                         <span class="sr-only">Close</span>
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                     </button>
                 </div>

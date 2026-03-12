@@ -73,22 +73,32 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Admin Master Data
-    Route::prefix('admin/master')->name('admin.master.')->group(function () {
-        Route::resource('jenis-surat', \App\Http\Controllers\Admin\JenisSuratController::class);
-        Route::resource('wilayah', \App\Http\Controllers\Admin\MasterWilayahController::class);
-        Route::resource('agama', \App\Http\Controllers\Admin\MasterAgamaController::class);
-        Route::resource('pekerjaan', \App\Http\Controllers\Admin\MasterPekerjaanController::class);
-        Route::resource('jabatan', \App\Http\Controllers\Admin\MasterJabatanController::class);
-        Route::resource('pejabat-desa', \App\Http\Controllers\Admin\PejabatDesaController::class);
-        Route::resource('penduduk', \App\Http\Controllers\Admin\PendudukController::class);
-        Route::resource('priority-bobot', \App\Http\Controllers\Admin\PriorityBobotController::class);
-    });
+    Route::prefix('admin')->name('admin.')->group(function () {
+        // Biodata Validation
+        Route::controller(\App\Http\Controllers\Admin\BiodataValidationController::class)->prefix('validation')->name('biodata-validation.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{biodata}', 'show')->name('show');
+            Route::post('/{biodata}/approve', 'approve')->name('approve');
+            Route::post('/{biodata}/reject', 'reject')->name('reject');
+        });
 
-    // Admin CMS
-    Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
-        Route::get('profil-desa', [\App\Http\Controllers\Admin\ProfilDesaController::class, 'index'])->name('profil-desa.index');
-        Route::put('profil-desa', [\App\Http\Controllers\Admin\ProfilDesaController::class, 'update'])->name('profil-desa.update');
-        Route::resource('informasi', \App\Http\Controllers\Admin\InformasiDesaController::class);
+        Route::prefix('master')->name('master.')->group(function () {
+            Route::resource('jenis-surat', \App\Http\Controllers\Admin\JenisSuratController::class);
+            Route::resource('wilayah', \App\Http\Controllers\Admin\MasterWilayahController::class);
+            Route::resource('agama', \App\Http\Controllers\Admin\MasterAgamaController::class);
+            Route::resource('pekerjaan', \App\Http\Controllers\Admin\MasterPekerjaanController::class);
+            Route::resource('jabatan', \App\Http\Controllers\Admin\MasterJabatanController::class);
+            Route::resource('pejabat-desa', \App\Http\Controllers\Admin\PejabatDesaController::class);
+            Route::resource('penduduk', \App\Http\Controllers\Admin\PendudukController::class);
+            Route::resource('priority-bobot', \App\Http\Controllers\Admin\PriorityBobotController::class);
+        });
+
+        // Admin CMS
+        Route::prefix('cms')->name('cms.')->group(function () {
+            Route::get('profil-desa', [\App\Http\Controllers\Admin\ProfilDesaController::class, 'index'])->name('profil-desa.index');
+            Route::put('profil-desa', [\App\Http\Controllers\Admin\ProfilDesaController::class, 'update'])->name('profil-desa.update');
+            Route::resource('informasi', \App\Http\Controllers\Admin\InformasiDesaController::class);
+        });
     });
 });
 

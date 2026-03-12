@@ -92,6 +92,19 @@ class PhoneAuthController extends Controller
         session()->forget('otp_phone');
         $request->session()->regenerate();
 
+        // Check if user has verified biodata
+        $biodata = \App\Models\BiodataMasyarakat::where('user_id', $user->id)->first();
+
+        if (!$biodata || $biodata->verification_status === 'unverified') {
+            return redirect()->route('masyarakat.profile')
+                ->with('warning', 'Silakan lengkapi biodata Anda terlebih dahulu.');
+        }
+
+        if ($biodata->verification_status === 'pending') {
+            return redirect()->route('masyarakat.home')
+                ->with('info', 'Biodata Anda sedang menunggu validasi admin.');
+        }
+
         return redirect()->route('masyarakat.home');
     }
 

@@ -55,4 +55,14 @@ class BiodataMasyarakat extends Model
     {
         return $this->belongsTo(MasterWilayah::class, 'rt_id');
     }
+
+    public function agama()
+    {
+        return $this->belongsTo(MasterAgama::class, 'agama_id');
+    }
+
+    public function pekerjaan()
+    {
+        return $this->belongsTo(MasterPekerjaan::class, 'pekerjaan_id');
+    }
 }
