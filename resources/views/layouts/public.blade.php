@@ -256,6 +256,7 @@
             document.getElementById('mobile-menu')?.classList.toggle('hidden');
         });
     </script>
+    @stack('scripts')
 </body>
 
 </html>

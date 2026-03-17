@@ -41,6 +41,25 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.pengajuan.index') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ request()->routeIs('admin.pengajuan.*') ? 'bg-gray-100 dark:bg-gray-700' : '' }}">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+                        </svg>
+                        <span class="ms-3">Daftar Prioritas Surat</span>
+                        @php
+                            $submittedCount = \App\Models\PengajuanSurat::where('status', 'submitted')->count();
+                        @endphp
+                        @if ($submittedCount > 0)
+                            <span
+                                class="inline-flex items-center justify-center w-5 h-5 p-3 ms-3 text-xs font-medium text-white bg-red-600 rounded-full">{{ $submittedCount }}</span>
+                        @endif
+                    </a>
+                </li>
+                <li>
                     <button type="button"
                         class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                         aria-controls="dropdown-master" data-collapse-toggle="dropdown-master">

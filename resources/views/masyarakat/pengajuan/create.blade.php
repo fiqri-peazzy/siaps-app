@@ -200,47 +200,109 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             @foreach ($jenis_surat->syarat as $s)
-                                <div class="space-y-3">
+                                <div class="space-y-3 file-upload-wrapper" data-id="{{ $s->id }}">
                                     <div class="flex flex-col">
                                         <span
-                                            class="text-sm font-bold text-gray-700 dark:text-gray-300">{{ $s->nama_syarat }}
+                                            class="text-sm font-black text-gray-700 dark:text-gray-300 uppercase tracking-tight">
+                                            {{ $s->nama_syarat }}
                                             @if ($s->is_required)
                                                 <span class="text-red-500">*</span>
                                             @endif
                                         </span>
                                         @if ($s->deskripsi)
                                             <span
-                                                class="text-xs text-gray-500 dark:text-gray-500">{{ $s->deskripsi }}</span>
+                                                class="text-[10px] font-bold text-gray-500 dark:text-gray-500 uppercase tracking-widest">{{ $s->deskripsi }}</span>
                                         @endif
                                     </div>
+
                                     <div class="relative group">
+                                        {{-- Hidden File Input --}}
                                         <input type="file" name="syarat[{{ $s->id }}]"
                                             id="file-{{ $s->id }}"
-                                            accept="{{ str_replace(',', '|', '.' . str_replace(',', ',.', $s->allowed_types)) }}"
+                                            accept="{{ '.' . str_replace(',', ',.', $s->allowed_types) }}"
                                             @if ($s->is_required) required @endif
-                                            class="hidden file-input" data-syarat="{{ $s->nama_syarat }}">
+                                            class="hidden file-input" data-max-size="{{ $s->max_size_kb }}"
+                                            data-allowed="{{ $s->allowed_types }}">
+
+                                        {{-- Upload Trigger --}}
                                         <label for="file-{{ $s->id }}"
-                                            class="flex items-center gap-4 px-6 py-4 bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-2xl cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/10 hover:border-blue-400 transition-all duration-300">
+                                            class="flex flex-col items-center justify-center w-full min-h-[160px] bg-gray-50 dark:bg-gray-800/50 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-3xl cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/10 hover:border-blue-400 transition-all duration-300 group upload-label">
+
                                             <div
-                                                class="p-2 bg-white dark:bg-gray-700 rounded-xl shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                                                </svg>
+                                                class="flex flex-col items-center justify-center py-6 text-center px-4 preview-placeholder">
+                                                <div
+                                                    class="p-4 bg-white dark:bg-gray-700 rounded-2xl shadow-sm mb-4 group-hover:bg-blue-600 group-hover:text-white transition-all transform group-hover:rotate-12">
+                                                    <svg class="w-8 h-8" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                    </svg>
+                                                </div>
+                                                <p class="text-sm font-black text-gray-600 dark:text-gray-400">Tarik
+                                                    file di sini atau <span class="text-blue-600 underline">Pilih
+                                                        File</span> Lokal</p>
+                                                <p
+                                                    class="text-[10px] text-gray-400 uppercase font-black tracking-widest mt-2">
+                                                    Maks {{ $s->max_size_kb }} KB • {{ $s->allowed_types }}</p>
                                             </div>
-                                            <div class="flex-1 overflow-hidden">
-                                                <span
-                                                    class="block text-sm font-semibold text-gray-600 dark:text-gray-400 truncate file-label-name">Pilih
-                                                    file...</span>
-                                                <span
-                                                    class="block text-[10px] text-gray-400 uppercase tracking-tighter">Maks
-                                                    {{ $s->max_size_kb }} KB ({{ $s->allowed_types }})</span>
+
+                                            {{-- Rich Preview Container --}}
+                                            <div
+                                                class="hidden w-full h-full p-4 preview-container flex-col items-center justify-center text-center relative">
+
+                                                <div
+                                                    class="absolute top-3 right-3 bg-green-500 text-white text-[9px] font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-sm flex items-center gap-1">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                    File Terpilih
+                                                </div>
+
+                                                <div
+                                                    class="relative w-20 h-20 mt-2 mb-3 rounded-2xl overflow-hidden shadow-md ring-4 ring-white dark:ring-gray-800 bg-gray-50 dark:bg-gray-800">
+                                                    <img src=""
+                                                        class="w-full h-full object-cover img-preview hidden">
+                                                    <div
+                                                        class="w-full h-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 doc-icon">
+                                                        <svg class="w-8 h-8" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+
+                                                <p
+                                                    class="text-sm font-black text-gray-900 dark:text-white truncate max-w-[220px] file-name-display mb-1">
+                                                </p>
+
+                                                <div class="flex items-center gap-2 mb-3">
+                                                    <span
+                                                        class="text-[10px] font-bold px-2 py-0.5 bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded file-size-display uppercase tracking-widest">
+                                                    </span>
+                                                </div>
+
+                                                {{-- Button Group: Hapus atau Ganti (Native behavior of label handles standard click) --}}
+                                                <div class="flex gap-2 w-full mt-2 relative z-10 px-4">
+                                                    <button type="button"
+                                                        class="flex-1 py-2 bg-red-50 hover:bg-red-500 text-red-600 hover:text-white text-[10px] font-black uppercase tracking-wider rounded-xl transition-all btn-remove-file">
+                                                        Hapus
+                                                    </button>
+                                                    <div
+                                                        class="flex-1 py-2 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white text-[10px] font-black uppercase tracking-wider rounded-xl transition-all btn-change-file text-center cursor-pointer flex items-center justify-center">
+                                                        Ganti Dokumen
+                                                    </div>
+                                                </div>
                                             </div>
                                         </label>
                                     </div>
-                                    <div class="error-msg text-xs text-red-500 hidden mt-1"></div>
+                                    <div
+                                        class="error-msg text-[10px] font-black text-red-500 uppercase tracking-widest hidden mt-1">
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -249,11 +311,11 @@
                     {{-- Actions --}}
                     <div class="pt-10 flex flex-col md:flex-row gap-4 items-center">
                         <button type="submit" id="btn-submit"
-                            class="w-full md:w-auto px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-xl shadow-blue-200 dark:shadow-none hover:shadow-2xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                            class="w-full md:w-auto px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-xl shadow-blue-200 dark:shadow-none hover:shadow-2xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wider">
                             Kirim Pengajuan Sekarang
                         </button>
                         <a href="{{ route('masyarakat.pengajuan.index') }}"
-                            class="w-full md:w-auto px-8 py-4 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 font-bold rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all text-center">
+                            class="w-full md:w-auto px-8 py-4 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 font-bold rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all text-center uppercase tracking-wider">
                             Batal
                         </a>
                     </div>
@@ -265,63 +327,101 @@
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const inputs = document.querySelectorAll('.file-input');
+                const fileInputs = document.querySelectorAll('.file-input');
                 const submitBtn = document.getElementById('btn-submit');
 
-                inputs.forEach(input => {
-                    input.addEventListener('change', function() {
-                        const labelName = this.parentElement.querySelector('.file-label-name');
-                        const errorMsg = this.parentElement.parentElement.querySelector('.error-msg');
-                        const labelCont = this.nextElementSibling;
+                fileInputs.forEach(input => {
+                    const wrapper = input.closest('.file-upload-wrapper');
+                    const uploadLabel = wrapper.querySelector('.upload-label');
+                    const placeholder = wrapper.querySelector('.preview-placeholder');
+                    const previewContainer = wrapper.querySelector('.preview-container');
+                    const imgPreview = wrapper.querySelector('.img-preview');
+                    const docIcon = wrapper.querySelector('.doc-icon');
+                    const fileNameDisplay = wrapper.querySelector('.file-name-display');
+                    const fileSizeDisplay = wrapper.querySelector('.file-size-display');
+                    const errorMsg = wrapper.querySelector('.error-msg');
+                    const removeBtn = wrapper.querySelector('.btn-remove-file');
 
-                        if (this.files && this.files.length > 0) {
+                    input.addEventListener('change', function(e) {
+                        if (this.files && this.files[0]) {
                             const file = this.files[0];
                             const maxSize = parseInt(this.getAttribute('data-max-size')) || 2048; // KB
-                            const allowedTypes = this.getAttribute('accept').toLowerCase();
-                            const fileName = file.name;
-                            const fileSize = file.size / 1024; // KB
-                            const fileExt = '.' + fileName.split('.').pop().toLowerCase();
+                            const allowedTypes = this.getAttribute('data-allowed').toLowerCase();
+                            const fileSizeKB = file.size / 1024;
+                            const fileExt = file.name.split('.').pop().toLowerCase();
 
+                            // Validation
                             let isValid = true;
                             let message = '';
 
-                            if (fileSize > maxSize) {
+                            if (fileSizeKB > maxSize) {
                                 isValid = false;
-                                message = `File terlalu besar (Maks ${maxSize} KB)`;
+                                message = `UKURAN FILE TERLALU BESAR (MAKS ${maxSize} KB)`;
                             } else if (!allowedTypes.includes(fileExt)) {
                                 isValid = false;
-                                message = `Format file tidak diizinkan (${fileExt})`;
+                                message = `FORMAT FILE TIDAK DIIZINKAN (.${fileExt})`;
                             }
 
                             if (!isValid) {
                                 errorMsg.textContent = message;
                                 errorMsg.classList.remove('hidden');
-                                labelCont.classList.add('border-red-400', 'bg-red-50',
+                                uploadLabel.classList.add('border-red-500', 'bg-red-50',
                                     'dark:bg-red-900/10');
-                                labelCont.classList.remove('border-gray-200', 'hover:border-blue-400');
-                                labelName.textContent = 'Gagal upload';
-                                this.value = ''; // Reset
-                            } else {
-                                errorMsg.classList.add('hidden');
-                                labelCont.classList.remove('border-red-400', 'bg-red-50',
-                                    'dark:bg-red-900/10');
-                                labelCont.classList.add('border-blue-500', 'bg-blue-50',
-                                    'dark:bg-blue-900/10');
-                                labelName.textContent = fileName;
-                                labelName.classList.add('text-blue-600', 'dark:text-blue-400');
+                                this.value = '';
+                                return;
                             }
-                        } else {
-                            labelName.textContent = 'Pilih file...';
-                            labelName.classList.remove('text-blue-600', 'dark:text-blue-400');
+
+                            // If valid, show preview
+                            errorMsg.classList.add('hidden');
+                            uploadLabel.classList.remove('border-red-500', 'bg-red-50',
+                                'dark:bg-red-900/10', 'border-gray-200');
+                            uploadLabel.classList.add('border-blue-500', 'bg-white',
+                                'dark:bg-gray-800');
+
+                            placeholder.classList.add('hidden');
+                            previewContainer.classList.remove('hidden');
+                            previewContainer.classList.add('flex');
+
+                            fileNameDisplay.textContent = file.name;
+                            fileSizeDisplay.textContent = (fileSizeKB > 1024) ? (fileSizeKB / 1024)
+                                .toFixed(2) + ' MB' : fileSizeKB.toFixed(1) + ' KB';
+
+                            if (file.type.match('image.*')) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    imgPreview.src = e.target.result;
+                                    imgPreview.classList.remove('hidden');
+                                    docIcon.classList.add('hidden');
+                                };
+                                reader.readAsDataURL(file);
+                            } else {
+                                imgPreview.classList.add('hidden');
+                                docIcon.classList.remove('hidden');
+                            }
                         }
+                    });
+
+                    // Remove/Change Functionality
+                    removeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        input.value = '';
+                        placeholder.classList.remove('hidden');
+                        previewContainer.classList.add('hidden');
+                        previewContainer.classList.remove('flex');
+                        uploadLabel.classList.remove('border-blue-500', 'bg-white', 'dark:bg-gray-800');
+                        uploadLabel.classList.add('border-gray-200');
+                        imgPreview.src = '';
                     });
                 });
 
                 // Prevent double submission
                 document.getElementById('submission-form').addEventListener('submit', function() {
                     submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-75');
                     submitBtn.innerHTML =
-                        '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...';
+                        '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> MEMPROSES...';
                 });
             });
         </script>

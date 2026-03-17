@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\PhoneAuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\PengajuanAdminController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +81,15 @@ Route::middleware('auth')->group(function () {
             Route::get('/{biodata}', 'show')->name('show');
             Route::post('/{biodata}/approve', 'approve')->name('approve');
             Route::post('/{biodata}/reject', 'reject')->name('reject');
+        });
+
+        // Pengajuan Management (DPS)
+        Route::controller(\App\Http\Controllers\Admin\PengajuanAdminController::class)->prefix('pengajuan')->name('pengajuan.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{pengajuan}', 'show')->name('show');
+            Route::post('/{pengajuan}/process', 'process')->name('process');
+            Route::post('/{pengajuan}/approve', 'approve')->name('approve');
+            Route::post('/{pengajuan}/reject', 'reject')->name('reject');
         });
 
         Route::prefix('master')->name('master.')->group(function () {
