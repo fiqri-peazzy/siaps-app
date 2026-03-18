@@ -77,36 +77,58 @@ class PengajuanAdminController extends Controller
     /**
      * Approve submission
      */
-    public function approve(Request $request, PengajuanSurat $pengajuan)
+    public function approve(PengajuanSurat $pengajuan)
     {
-        // Implementation for Stage 6 / Final Approval logic
-        // For now, just mark as approved
+        // Check lock
+        if ($pengajuan->handled_by_admin && $pengajuan->handled_by_admin !== Auth::id()) {
+            abort(403, 'Aksi tidak diizinkan. Pengajuan ini sedang ditangani oleh Admin lain.');
+        }
+
         try {
-            DB::beginTransaction();
+            \Illuminate\Support\Facades\DB::beginTransaction();
 
             $oldStatus = $pengajuan->status;
+
+            // Generate PDF Draft
+            $pengajuan->load(['biodata.user', 'jenisSurat']);
+
+            // Check if directory exists
+            if (!\Illuminate\Support\Facades\Storage::disk('public')->exists('surat_draft')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('surat_draft');
+            }
+
+            // Load PDF view
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.draft.default', compact('pengajuan'));
+
+            $filename = 'draft_' . $pengajuan->kode_pengajuan . '_' . time() . '.pdf';
+            $path = 'surat_draft/' . $filename;
+
+            // Save PDF
+            \Illuminate\Support\Facades\Storage::disk('public')->put($path, $pdf->output());
+
             $pengajuan->update([
-                'status' => 'approved',
-                'approved_at' => now(),
-                'approved_by' => Auth::id()
+                'status' => 'validated',
+                'validated_at' => now(),
+                'surat_path' => $path
+                // 'approved_by' and 'approved_at' are for Kepala Desa later
             ]);
 
-            PengajuanHistory::create([
+            \App\Models\PengajuanHistory::create([
                 'pengajuan_id' => $pengajuan->id,
                 'from_status' => $oldStatus,
-                'to_status' => 'approved',
+                'to_status' => 'validated',
                 'priority_score_saat_itu' => $pengajuan->priority_score,
-                'actor_id' => Auth::id(),
+                'actor_id' => \Illuminate\Support\Facades\Auth::id(),
                 'actor_role' => 'admin',
-                'catatan' => 'Pengajuan disetujui.',
+                'catatan' => 'Draf surat divalidasi dan di-generate. Menunggu persetujuan Kepala Desa.',
                 'created_at' => now()
             ]);
 
-            DB::commit();
-            return redirect()->route('admin.pengajuan.index')->with('success', 'Pengajuan berhasil disetujui.');
+            \Illuminate\Support\Facades\DB::commit();
+            return redirect()->route('admin.pengajuan.index')->with('success', 'Pengajuan divalidasi. Draf surat berhasil dibuat.');
         } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with('error', 'Gagal menyetujui pengajuan: ' . $e->getMessage());
+            \Illuminate\Support\Facades\DB::rollBack();
+            return back()->with('error', 'Gagal memvalidasi pengajuan: ' . $e->getMessage());
         }
     }
 
@@ -115,6 +137,11 @@ class PengajuanAdminController extends Controller
      */
     public function reject(Request $request, PengajuanSurat $pengajuan)
     {
+        // Check lock
+        if ($pengajuan->handled_by_admin && $pengajuan->handled_by_admin !== Auth::id()) {
+            abort(403, 'Aksi tidak diizinkan. Pengajuan ini sedang ditangani oleh Admin lain.');
+        }
+
         $request->validate([
             'reason' => 'required|string|max:500'
         ]);
@@ -144,6 +171,57 @@ class PengajuanAdminController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Gagal menolak pengajuan: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Request Revision for submission
+     */
+    public function requestRevision(Request $request, PengajuanSurat $pengajuan)
+    {
+        // Check lock
+        if ($pengajuan->handled_by_admin && $pengajuan->handled_by_admin !== Auth::id()) {
+            abort(403, 'Aksi tidak diizinkan. Pengajuan ini sedang ditangani oleh Admin lain.');
+        }
+
+        $request->validate([
+            'catatan_revisi' => 'required|string|max:1000'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $oldStatus = $pengajuan->status;
+
+            // Update submission status to 'need_revision'
+            $pengajuan->update([
+                'status' => 'need_revision',
+            ]);
+
+            // Create revision record
+            \App\Models\PengajuanRevisi::create([
+                'pengajuan_id' => $pengajuan->id,
+                'diminta_oleh' => Auth::id(),
+                'catatan_revisi' => $request->catatan_revisi,
+                'status' => 'pending'
+            ]);
+
+            PengajuanHistory::create([
+                'pengajuan_id' => $pengajuan->id,
+                'from_status' => $oldStatus,
+                'to_status' => 'need_revision',
+                'priority_score_saat_itu' => $pengajuan->priority_score,
+                'actor_id' => Auth::id(),
+                'actor_role' => 'admin',
+                'catatan' => 'Admin meminta revisi: ' . substr($request->catatan_revisi, 0, 50) . '...',
+                'created_at' => now()
+            ]);
+
+            DB::commit();
+            return redirect()->route('admin.pengajuan.index')->with('success', 'Permintaan revisi telah dikirim ke pemohon.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal meminta revisi: ' . $e->getMessage());
         }
     }
 }

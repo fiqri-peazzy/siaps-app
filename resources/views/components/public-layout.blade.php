@@ -83,14 +83,95 @@
 
                     @auth
                         @if (Auth::user()->role === 'masyarakat')
-                            <a href="{{ route('masyarakat.profile') }}"
-                                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                Akun Saya
-                            </a>
+                            @php
+                                $displayName = Auth::user()->biodata->nama_lengkap ?? Auth::user()->name;
+                                $displayInitial = substr($displayName, 0, 2);
+                                $displayShortName = explode(' ', $displayName)[0];
+                            @endphp
+                            {{-- Account Dropdown --}}
+                            <div class="relative" x-data="{ open: false }">
+                                <button @click="open = !open" @click.outside="open = false"
+                                    class="inline-flex items-center gap-2 pl-3 pr-2 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
+                                    <div
+                                        class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center text-white text-[10px] font-black uppercase ring-2 ring-blue-50 dark:ring-blue-900/40">
+                                        {{ $displayInitial }}
+                                    </div>
+                                    <span
+                                        class="text-sm font-semibold text-gray-700 dark:text-gray-200 hidden sm:block">{{ $displayShortName }}</span>
+                                    <svg class="w-4 h-4 text-gray-400 transition-transform"
+                                        :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+
+                                {{-- Dropdown Panel --}}
+                                <div x-show="open" x-transition:enter="transition ease-out duration-200"
+                                    x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                    x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                    x-transition:leave="transition ease-in duration-75"
+                                    x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                    x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                    class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-xl z-50 overflow-hidden"
+                                    style="display: none;">
+
+                                    <div
+                                        class="px-4 py-3 bg-gray-50/50 dark:bg-gray-700/30 border-b border-gray-100 dark:border-gray-700">
+                                        <p
+                                            class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">
+                                            Akun Terdaftar</p>
+                                        <p class="text-sm font-black text-gray-900 dark:text-white truncate">
+                                            {{ $displayName }}</p>
+                                    </div>
+
+                                    <div class="p-1.5">
+                                        <a href="{{ route('masyarakat.profile') }}"
+                                            class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/60 rounded-xl transition-colors group">
+                                            <div
+                                                class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                </svg>
+                                            </div>
+                                            Profil & Data Diri
+                                        </a>
+                                        <a href="{{ route('masyarakat.pengajuan.index') }}"
+                                            class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/60 rounded-xl transition-colors group">
+                                            <div
+                                                class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            </div>
+                                            Riwayat Pengajuan
+                                        </a>
+
+                                        <div class="my-1.5 border-t border-gray-100 dark:border-gray-700"></div>
+
+                                        <form method="POST" action="{{ route('auth.logout') }}">
+                                            @csrf
+                                            <button type="submit"
+                                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors group">
+                                                <div
+                                                    class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                                    </svg>
+                                                </div>
+                                                Keluar Aplikasi
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         @else
                             <a href="{{ route('dashboard') }}"
                                 class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm">
@@ -138,7 +219,7 @@
 
     {{-- MAIN CONTENT --}}
     <main class="pt-16">
-        @if (session('info'))
+        {{-- @if (session('info'))
             <div
                 class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800 px-4 py-3 text-center text-sm text-blue-700 dark:text-blue-300">
                 {{ session('info') }}
@@ -149,7 +230,7 @@
                 class="bg-green-50 dark:bg-green-900/20 border-b border-green-200 dark:border-green-800 px-4 py-3 text-center text-sm text-green-700 dark:text-green-300">
                 {{ session('success') }}
             </div>
-        @endif
+        @endif --}}
 
         {{ $slot }}
     </main>

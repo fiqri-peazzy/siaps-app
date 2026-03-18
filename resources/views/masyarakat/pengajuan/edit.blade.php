@@ -23,7 +23,7 @@
                                     d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                     clip-rule="evenodd" />
                             </svg>
-                            <span class="ml-1 text-sm font-bold text-gray-900 dark:text-white md:ml-2">Form
+                            <span class="ml-1 text-sm font-bold text-gray-900 dark:text-white md:ml-2">Perbaiki
                                 {{ $jenis_surat->nama }}</span>
                         </div>
                     </li>
@@ -46,9 +46,10 @@
                             </div>
                             <div>
                                 <h2 class="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
-                                    {{ $jenis_surat->nama }}</h2>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Lengkapi formulir di bawah ini
-                                    dengan data yang benar.</p>
+                                    Perbaiki {{ $jenis_surat->nama }}</h2>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Lengkapi kembali formulir di
+                                    bawah ini
+                                    sesuai catatan revisi dari admin.</p>
                             </div>
                         </div>
                         <div
@@ -65,9 +66,33 @@
                     </div>
                 </div>
 
-                <form action="{{ route('masyarakat.pengajuan.store', $jenis_surat->kode) }}" method="POST"
-                    enctype="multipart/form-data" class="p-8 space-y-10" id="submission-form">
+                @if ($revisi)
+                    <div
+                        class="m-8 p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl shadow-sm">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="p-3 bg-amber-100 dark:bg-amber-900/40 rounded-xl text-amber-600 dark:text-amber-400">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-black text-amber-900 dark:text-amber-100 uppercase tracking-tight">
+                                    Catatan Revisi dari Admin</h3>
+                                <p
+                                    class="text-sm text-amber-800 dark:text-amber-300 mt-2 leading-relaxed font-semibold">
+                                    {{ $revisi->catatan_revisi }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <form action="{{ route('masyarakat.pengajuan.update', $pengajuan) }}" method="POST"
+                    enctype="multipart/form-data" class="p-8 pb-8 pt-0 space-y-10" id="submission-form">
                     @csrf
+                    @method('PUT')
 
                     {{-- Section 1: Data Dasar (Read Only dari Profile) --}}
                     <section class="space-y-6">
@@ -144,11 +169,19 @@
                                     Penggunaan Surat <span class="text-red-500">*</span></label>
                                 <select id="urgensi" name="urgensi" required
                                     class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 dark:focus:border-blue-600 transition-all outline-none text-gray-900 dark:text-white">
-                                    <option value="" disabled selected>Pilih Tingkat Urgensi</option>
-                                    <option value="1">Sangat Mendesak</option>
-                                    <option value="2">Mendesak</option>
-                                    <option value="3">Biasa</option>
-                                    <option value="4">Tidak Mendesak</option>
+                                    <option value="" disabled>Pilih Tingkat Urgensi</option>
+                                    <option value="1"
+                                        {{ old('urgensi', $pengajuan->urgensi) == 1 ? 'selected' : '' }}>Sangat
+                                        Mendesak
+                                    </option>
+                                    <option value="2"
+                                        {{ old('urgensi', $pengajuan->urgensi) == 2 ? 'selected' : '' }}>Mendesak
+                                    </option>
+                                    <option value="3"
+                                        {{ old('urgensi', $pengajuan->urgensi) == 3 ? 'selected' : '' }}>Biasa</option>
+                                    <option value="4"
+                                        {{ old('urgensi', $pengajuan->urgensi) == 4 ? 'selected' : '' }}>Tidak Mendesak
+                                    </option>
                                 </select>
                             </div>
 
@@ -159,11 +192,17 @@
                                     Keperluan Pengajuan <span class="text-red-500">*</span></label>
                                 <textarea id="keperluan" name="keperluan" rows="3" required
                                     class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 dark:focus:border-blue-600 transition-all outline-none text-gray-900 dark:text-white placeholder:text-gray-400"
-                                    placeholder="Contoh: Untuk persyaratan pendaftaran beasiswa pendidikan tinggi."></textarea>
+                                    placeholder="Contoh: Untuk persyaratan pendaftaran beasiswa pendidikan tinggi.">{{ old('keperluan', $pengajuan->keperluan) }}</textarea>
                             </div>
 
                             {{-- Dynamic Fields --}}
                             @foreach ($jenis_surat->fields as $field)
+                                @php
+                                    $value = old(
+                                        "fields.{$field->field_key}",
+                                        $pengajuan->field_data[$field->field_key] ?? '',
+                                    );
+                                @endphp
                                 <div>
                                     <label for="{{ $field->field_key }}"
                                         class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
@@ -177,24 +216,27 @@
                                         <textarea id="{{ $field->field_key }}" name="fields[{{ $field->field_key }}]" rows="3"
                                             @if ($field->is_required) required @endif
                                             class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none text-gray-900 dark:text-white"
-                                            placeholder="{{ $field->placeholder }}"></textarea>
+                                            placeholder="{{ $field->placeholder }}">{{ $value }}</textarea>
                                     @elseif($field->field_type === 'select')
                                         <select id="{{ $field->field_key }}" name="fields[{{ $field->field_key }}]"
                                             @if ($field->is_required) required @endif
                                             class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none text-gray-900 dark:text-white">
                                             <option value="">Pilih {{ $field->field_label }}</option>
                                             @foreach ($field->field_options as $option)
-                                                <option value="{{ $option }}">{{ $option }}</option>
+                                                <option value="{{ $option }}"
+                                                    {{ $value === $option ? 'selected' : '' }}>{{ $option }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     @elseif($field->field_type === 'date')
                                         <input type="date" id="{{ $field->field_key }}"
-                                            name="fields[{{ $field->field_key }}]"
+                                            name="fields[{{ $field->field_key }}]" value="{{ $value }}"
                                             @if ($field->is_required) required @endif
                                             class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none text-gray-900 dark:text-white">
                                     @else
                                         <input type="{{ $field->field_type ?? 'text' }}"
                                             id="{{ $field->field_key }}" name="fields[{{ $field->field_key }}]"
+                                            value="{{ $value }}"
                                             @if ($field->is_required) required @endif
                                             placeholder="{{ $field->placeholder }}"
                                             class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none text-gray-900 dark:text-white">
@@ -216,6 +258,9 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             @foreach ($jenis_surat->syarat as $s)
+                                @php
+                                    $existingDoc = $pengajuan->dokumen->where('syarat_id', $s->id)->first();
+                                @endphp
                                 <div class="space-y-3 file-upload-wrapper" data-id="{{ $s->id }}">
                                     <div class="flex flex-col">
                                         <span
@@ -236,16 +281,16 @@
                                         <input type="file" name="syarat[{{ $s->id }}]"
                                             id="file-{{ $s->id }}"
                                             accept="{{ '.' . str_replace(',', ',.', $s->allowed_types) }}"
-                                            @if ($s->is_required) required @endif
+                                            @if ($s->is_required && !$existingDoc) required @endif
                                             class="hidden file-input" data-max-size="{{ $s->max_size_kb }}"
                                             data-allowed="{{ $s->allowed_types }}">
 
                                         {{-- Upload Trigger --}}
                                         <label for="file-{{ $s->id }}"
-                                            class="flex flex-col items-center justify-center w-full min-h-[160px] bg-gray-50 dark:bg-gray-800/50 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-3xl cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/10 hover:border-blue-400 transition-all duration-300 group upload-label">
+                                            class="flex flex-col items-center justify-center w-full min-h-[160px] bg-gray-50 dark:bg-gray-800/50 border-2 {{ $existingDoc ? 'border-solid border-green-500 dark:border-green-600 bg-green-50/50 dark:bg-green-900/10' : 'border-dashed border-gray-200 dark:border-gray-700' }} rounded-3xl cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/10 hover:border-blue-400 transition-all duration-300 group upload-label">
 
                                             <div
-                                                class="flex flex-col items-center justify-center py-6 text-center px-4 preview-placeholder">
+                                                class="{{ $existingDoc ? 'hidden' : 'flex' }} flex-col items-center justify-center py-6 text-center px-4 preview-placeholder">
                                                 <div
                                                     class="p-4 bg-white dark:bg-gray-700 rounded-2xl shadow-sm mb-4 group-hover:bg-blue-600 group-hover:text-white transition-all transform group-hover:rotate-12">
                                                     <svg class="w-8 h-8" fill="none" stroke="currentColor"
@@ -265,7 +310,7 @@
 
                                             {{-- Rich Preview Container --}}
                                             <div
-                                                class="hidden w-full h-full p-4 preview-container flex-col items-center justify-center text-center relative">
+                                                class="{{ $existingDoc ? 'flex' : 'hidden' }} w-full h-full p-4 preview-container flex-col items-center justify-center text-center relative">
 
                                                 <div
                                                     class="absolute top-3 right-3 bg-green-500 text-white text-[9px] font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-sm flex items-center gap-1">
@@ -279,30 +324,45 @@
 
                                                 <div
                                                     class="relative w-20 h-20 mt-2 mb-3 rounded-2xl overflow-hidden shadow-md ring-4 ring-white dark:ring-gray-800 bg-gray-50 dark:bg-gray-800">
-                                                    <img src=""
-                                                        class="w-full h-full object-cover img-preview hidden">
-                                                    <div
-                                                        class="w-full h-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 doc-icon">
-                                                        <svg class="w-8 h-8" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                        </svg>
-                                                    </div>
+                                                    @if ($existingDoc && str_starts_with($existingDoc->mime_type, 'image/'))
+                                                        <img src="{{ asset('storage/' . $existingDoc->file_path) }}"
+                                                            class="w-full h-full object-cover img-preview">
+                                                        <div
+                                                            class="w-full h-full bg-blue-100 dark:bg-blue-900/30 hidden items-center justify-center text-blue-600 dark:text-blue-400 doc-icon">
+                                                            <svg class="w-8 h-8" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                            </svg>
+                                                        </div>
+                                                    @else
+                                                        <img src=""
+                                                            class="w-full h-full object-cover img-preview hidden">
+                                                        <div
+                                                            class="w-full h-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 doc-icon">
+                                                            <svg class="w-8 h-8" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                            </svg>
+                                                        </div>
+                                                    @endif
                                                 </div>
 
                                                 <p
                                                     class="text-sm font-black text-gray-900 dark:text-white truncate max-w-[220px] file-name-display mb-1">
+                                                    {{ $existingDoc ? $existingDoc->original_filename : '' }}
                                                 </p>
 
                                                 <div class="flex items-center gap-2 mb-3">
                                                     <span
                                                         class="text-[10px] font-bold px-2 py-0.5 bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded file-size-display uppercase tracking-widest">
+                                                        {{ $existingDoc ? number_format($existingDoc->file_size / 1024, 1) . ' KB' : '' }}
                                                     </span>
                                                 </div>
 
-                                                {{-- Button Group: Hapus atau Ganti (Native behavior of label handles standard click) --}}
                                                 <div class="flex gap-2 w-full mt-2 relative z-10 px-4">
                                                     <button type="button"
                                                         class="flex-1 py-2 bg-red-50 hover:bg-red-500 text-red-600 hover:text-white text-[10px] font-black uppercase tracking-wider rounded-xl transition-all btn-remove-file">

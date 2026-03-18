@@ -40,7 +40,7 @@ Route::middleware('guest')->prefix('login')->name('auth.')->group(function () {
 */
 Route::middleware(['auth', 'masyarakat'])->prefix('akun')->name('masyarakat.')->group(function () {
     Route::get('/home', function () {
-        return view('masyarakat.home');
+        return redirect()->route('masyarakat.pengajuan.index');
     })->name('home');
 
     // Biodata
@@ -52,6 +52,8 @@ Route::middleware(['auth', 'masyarakat'])->prefix('akun')->name('masyarakat.')->
         Route::get('/', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'index'])->name('index');
         Route::get('/tambah/{jenis_surat:kode}', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'create'])->name('create');
         Route::post('/tambah/{jenis_surat:kode}', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'store'])->name('store');
+        Route::get('/{pengajuan:kode_pengajuan}/edit', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'edit'])->name('edit');
+        Route::put('/{pengajuan:kode_pengajuan}', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'update'])->name('update');
         Route::get('/{pengajuan:kode_pengajuan}', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'show'])->name('show');
     });
 });
@@ -88,6 +90,15 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{pengajuan}', 'show')->name('show');
             Route::post('/{pengajuan}/process', 'process')->name('process');
+            Route::post('/{pengajuan}/approve', 'approve')->name('approve');
+            Route::post('/{pengajuan}/reject', 'reject')->name('reject');
+            Route::post('/{pengajuan}/revision', 'requestRevision')->name('revision');
+        });
+
+        // Kepala Desa Approval Dashboard
+        Route::controller(\App\Http\Controllers\Admin\KepalaDasaController::class)->prefix('kades')->name('kades.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{pengajuan}', 'show')->name('show');
             Route::post('/{pengajuan}/approve', 'approve')->name('approve');
             Route::post('/{pengajuan}/reject', 'reject')->name('reject');
         });

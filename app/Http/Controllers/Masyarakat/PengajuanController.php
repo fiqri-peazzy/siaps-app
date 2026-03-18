@@ -33,13 +33,18 @@ class PengajuanController extends Controller
         $profil = $this->getProfilDesa();
         $layanan = JenisSurat::where('is_active', true)->get();
 
-        // Cek pengajuan aktif
-        $activeSubmissions = PengajuanSurat::where('user_id', Auth::id())
-            ->whereNotIn('status', ['completed', 'rejected', 'cancelled'])
-            ->with('jenisSurat')
-            ->get();
+        // Get all submissions history for this user
+        $submissions = PengajuanSurat::where('user_id', Auth::id())
+            ->with(['jenisSurat', 'biodata'])
+            ->latest()
+            ->paginate(10);
 
-        return view('masyarakat.pengajuan.index', compact('profil', 'layanan', 'activeSubmissions'));
+        // Separate active submissions for the quick-info section if needed
+        $activeSubmissions = $submissions->filter(function ($sub) {
+            return in_array($sub->status, ['submitted', 'queued', 'in_process', 'pending_revision']);
+        });
+
+        return view('masyarakat.pengajuan.index', compact('profil', 'layanan', 'submissions', 'activeSubmissions'));
     }
 
     public function create(JenisSurat $jenis_surat)
@@ -77,6 +82,7 @@ class PengajuanController extends Controller
         // 1. Validation Logic
         $rules = [
             'keperluan' => 'required|string|max:500',
+            'urgensi' => 'required|integer|in:1,2,3,4',
         ];
 
         // Dynamic fields validation
@@ -106,7 +112,7 @@ class PengajuanController extends Controller
             DB::beginTransaction();
 
             // 2. Calculate Priority
-            $priorityData = $this->pengajuanService->calculatePriorityScore($biodata, $jenis_surat);
+            $priorityData = $this->pengajuanService->calculatePriorityScore($biodata, $jenis_surat, (int) $request->urgensi);
 
             // 3. Create Pengajuan
             $pengajuan = PengajuanSurat::create([
@@ -114,6 +120,7 @@ class PengajuanController extends Controller
                 'user_id' => $user->id,
                 'biodata_id' => $biodata->id,
                 'jenis_surat_id' => $jenis_surat->id,
+                'urgensi' => $request->urgensi,
                 'keperluan' => $request->keperluan,
                 'field_data' => $request->fields ?? [],
                 'priority_score' => $priorityData['total_score'],
@@ -167,6 +174,156 @@ class PengajuanController extends Controller
             DB::rollBack();
             Log::error('Gagal simpan pengajuan: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan saat menyimpan pengajuan. Silakan coba lagi.')->withInput();
+        }
+    }
+    /**
+     * Show revision edit form
+     */
+    public function edit(PengajuanSurat $pengajuan)
+    {
+        if ($pengajuan->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if ($pengajuan->status !== 'need_revision') {
+            return redirect()->route('masyarakat.pengajuan.index')->with('error', 'Status pengajuan tidak valid untuk direvisi.');
+        }
+
+        $jenis_surat = $pengajuan->jenisSurat;
+        $jenis_surat->load('fields', 'syarat');
+        $biodata = $pengajuan->biodata;
+
+        $pengajuan->load(['revisi' => function ($q) {
+            $q->where('status', 'pending');
+        }, 'dokumen']);
+        $revisi = $pengajuan->revisi->first();
+
+        return view('masyarakat.pengajuan.edit', compact('pengajuan', 'jenis_surat', 'biodata', 'revisi'));
+    }
+
+    /**
+     * Update/Submit Revision
+     */
+    public function update(Request $request, PengajuanSurat $pengajuan)
+    {
+        if ($pengajuan->user_id !== Auth::id() || $pengajuan->status !== 'need_revision') {
+            abort(403);
+        }
+
+        $jenis_surat = $pengajuan->jenisSurat;
+
+        // 1. Validation Logic
+        $rules = [
+            'keperluan' => 'required|string|max:500',
+            'urgensi' => 'required|integer|in:1,2,3,4',
+        ];
+
+        // Dynamic fields validation
+        $jenis_surat->load('fields', 'syarat');
+        foreach ($jenis_surat->fields as $field) {
+            $fieldRules = $field->validation_rules ?? 'nullable';
+            if ($field->is_required) {
+                $fieldRules = 'required|' . $fieldRules;
+            }
+            $rules["fields.{$field->field_key}"] = $fieldRules;
+        }
+
+        // Syarat documents validation
+        foreach ($jenis_surat->syarat as $s) {
+            $syaratRules = 'file|mimes:' . $s->allowed_types . '|max:' . $s->max_size_kb;
+
+            // Allow nullable if document already uploaded
+            $existingDoc = $pengajuan->dokumen()->where('syarat_id', $s->id)->first();
+
+            if ($s->is_required && !$existingDoc) {
+                $syaratRules = 'required|' . $syaratRules;
+            } else {
+                $syaratRules = 'nullable|' . $syaratRules;
+            }
+            $rules["syarat.{$s->id}"] = $syaratRules;
+        }
+
+        $request->validate($rules);
+
+        try {
+            DB::beginTransaction();
+
+            $biodata = $pengajuan->biodata;
+            $priorityData = $this->pengajuanService->calculatePriorityScore($biodata, $jenis_surat, (int) $request->urgensi);
+
+            // 2. Update Pengajuan
+            $pengajuan->update([
+                'keperluan' => $request->keperluan,
+                'urgensi' => $request->urgensi,
+                'field_data' => $request->fields ?? [],
+                'priority_score' => $priorityData['total_score'],
+                'priority_breakdown' => $priorityData['breakdown'],
+                'status' => 'submitted', // Back to the queue
+            ]);
+
+            // 3. Handle Uploads
+            if ($request->hasFile('syarat')) {
+                foreach ($request->file('syarat') as $syaratId => $file) {
+                    $syarat = $jenis_surat->syarat->find($syaratId);
+                    if ($syarat) {
+                        $path = $file->store('pengajuan/documents', 'public');
+                        $existingDoc = $pengajuan->dokumen()->where('syarat_id', $syaratId)->first();
+
+                        if ($existingDoc) {
+                            \Illuminate\Support\Facades\Storage::disk('public')->delete($existingDoc->file_path);
+                            $existingDoc->update([
+                                'original_filename' => $file->getClientOriginalName(),
+                                'file_path' => $path,
+                                'file_size' => $file->getSize(),
+                                'mime_type' => $file->getMimeType(),
+                                'upload_status' => 'uploaded',
+                                'uploaded_at' => now(),
+                            ]);
+                        } else {
+                            \App\Models\PengajuanDokumen::create([
+                                'pengajuan_id' => $pengajuan->id,
+                                'syarat_id' => $syarat->id,
+                                'nama_dokumen' => $syarat->nama_syarat,
+                                'original_filename' => $file->getClientOriginalName(),
+                                'file_path' => $path,
+                                'file_size' => $file->getSize(),
+                                'mime_type' => $file->getMimeType(),
+                                'upload_status' => 'uploaded',
+                                'uploaded_at' => now(),
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            // 4. Update Revision Record
+            \App\Models\PengajuanRevisi::where('pengajuan_id', $pengajuan->id)
+                ->where('status', 'pending')
+                ->update([
+                    'status' => 'revised',
+                    'revised_at' => now()
+                ]);
+
+            // 5. Create History
+            \App\Models\PengajuanHistory::create([
+                'pengajuan_id' => $pengajuan->id,
+                'from_status' => 'need_revision',
+                'to_status' => 'submitted',
+                'priority_score_saat_itu' => $priorityData['total_score'],
+                'actor_id' => Auth::id(),
+                'actor_role' => 'masyarakat',
+                'catatan' => 'Pemohon telah mengirimkan revisi pengajuan.',
+                'created_at' => now(),
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('masyarakat.pengajuan.index')
+                ->with('success', 'Revisi pengajuan ' . $jenis_surat->nama . ' berhasil dikirim.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Gagal simpan revisi pengajuan: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan revisi pengajuan. Silakan coba lagi.')->withInput();
         }
     }
 

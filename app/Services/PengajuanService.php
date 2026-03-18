@@ -12,51 +12,70 @@ class PengajuanService
     /**
      * Hitung Skor Prioritas berdasarkan Profil Masyarakat dan Jenis Surat
      */
-    public function calculatePriorityScore(BiodataMasyarakat $biodata, JenisSurat $jenisSurat): array
+    public function calculatePriorityScore(BiodataMasyarakat $biodata, JenisSurat $jenisSurat, int $urgensi = 3): array
     {
-        $baseScore = (float) $jenisSurat->base_priority;
-        $totalScore = $baseScore;
+        // Journal Algorithm: Lower is Higher Priority
+        // Tier 1: (Jenis Surat Value) + (Urgensi Value)
+
+        $jenisSuratValue = (int) $jenisSurat->base_priority; // Assigned 1-5
+        $urgensiValue = $urgensi; // Input 1-4
+
+        $tier1Score = $jenisSuratValue + $urgensiValue;
+        $totalScore = (float) $tier1Score;
+
         $breakdown = [
             [
-                'label' => 'Base Priority (' . $jenisSurat->nama . ')',
-                'score' => $baseScore,
+                'label' => 'Jenis Surat (' . $jenisSurat->nama . ')',
+                'score' => $jenisSuratValue,
+                'weight' => 'P1',
                 'type' => 'base'
+            ],
+            [
+                'label' => 'Tingkat Urgensi',
+                'score' => $urgensiValue,
+                'weight' => 'P1',
+                'type' => 'base'
+            ],
+            [
+                'label' => 'Subtotal Prioritas 1',
+                'score' => $tier1Score,
+                'type' => 'subtotal'
             ]
         ];
 
-        // Ambil semua bobot dari database
+        // Enhancement: Deduct score for special conditions (Lower = More Priority)
         $bobots = PriorityBobot::where('is_active', true)->get()->keyBy('kode');
 
         // 1. Cek Lansia (> 60 tahun)
         $usia = Carbon::parse($biodata->tanggal_lahir)->age;
         if ($usia >= 60 && isset($bobots['LANSIA'])) {
-            $score = (float) $bobots['LANSIA']->bobot;
-            $totalScore += $score;
+            $bonus = (float) $bobots['LANSIA']->bobot;
+            $totalScore -= $bonus; // Reduction makes it more priority
             $breakdown[] = [
-                'label' => 'Lansia (Usia ' . $usia . ' thn)',
-                'score' => $score,
+                'label' => 'Bonus Lansia (Usia ' . $usia . ' thn)',
+                'score' => -$bonus,
                 'type' => 'profile'
             ];
         }
 
         // 2. Cek Disabilitas
         if ($biodata->is_disabilitas && isset($bobots['DISABILITAS'])) {
-            $score = (float) $bobots['DISABILITAS']->bobot;
-            $totalScore += $score;
+            $bonus = (float) $bobots['DISABILITAS']->bobot;
+            $totalScore -= $bonus;
             $breakdown[] = [
-                'label' => 'Disabilitas',
-                'score' => $score,
+                'label' => 'Bonus Disabilitas',
+                'score' => -$bonus,
                 'type' => 'profile'
             ];
         }
 
-        // 3. Cek Hamil (Khusus Perempuan & sudah kawin/pernah)
+        // 3. Cek Hamil (Khusus Perempuan)
         if ($biodata->is_hamil && $biodata->jenis_kelamin === 'P' && isset($bobots['HAMIL'])) {
-            $score = (float) $bobots['HAMIL']->bobot;
-            $totalScore += $score;
+            $bonus = (float) $bobots['HAMIL']->bobot;
+            $totalScore -= $bonus;
             $breakdown[] = [
-                'label' => 'Ibu Hamil',
-                'score' => $score,
+                'label' => 'Bonus Ibu Hamil',
+                'score' => -$bonus,
                 'type' => 'profile'
             ];
         }

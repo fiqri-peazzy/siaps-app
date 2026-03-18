@@ -60,6 +60,23 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.kades.index') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ request()->routeIs('admin.kades.*') ? 'bg-gray-100 dark:bg-gray-700' : '' }}">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z" />
+                        </svg>
+                        <span class="ms-3">Persetujuan Kades</span>
+                        @php $kadesCount = \App\Models\PengajuanSurat::where('status', 'validated')->count(); @endphp
+                        @if ($kadesCount > 0)
+                            <span
+                                class="inline-flex items-center justify-center w-5 h-5 p-3 ms-3 text-xs font-medium text-white bg-sky-600 rounded-full">{{ $kadesCount }}</span>
+                        @endif
+                    </a>
+                </li>
+                <li>
                     <button type="button"
                         class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                         aria-controls="dropdown-master" data-collapse-toggle="dropdown-master">
@@ -157,7 +174,8 @@
                 <a href="#"
                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 20 20">
                         <path
                             d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89V1a1 1 0 0 0-1-1h-2a1 1 0 0 0 0 2h1v.57c-1.316.25-2.585.9-3.6 1.903a21.283 21.283 0 0 0-3.3 4.6l-.168.33a2 2 0 0 0 .51 2.41l3.561 2.732a2 2 0 0 0 2.415-.153 15.54 15.54 0 0 1 2.107-1.475v2.47a2 2 0 0 0 .586 1.414l5 5a2 2 0 0 0 2.828 0l5-5a2 2 0 0 0 .586-1.414v-2.47a15.564 15.564 0 0 1 2.107 1.475 2 2 0 0 0 2.415.153l3.561-2.732a2 2 0 0 0 .51-2.41l-.168-.33a21.283 21.283 0 0 0-3.3-4.6 6.72 6.72 0 0 0-2.4-1.903z" />
                     </svg>

@@ -55,4 +55,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the citizen's biodata
+     */
+    public function biodata()
+    {
+        return $this->hasOne(BiodataMasyarakat::class, 'user_id');
+    }
 }

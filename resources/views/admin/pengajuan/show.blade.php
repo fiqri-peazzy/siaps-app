@@ -245,17 +245,75 @@
                     @endif
 
                     @if ($pengajuan->status === 'in_process')
-                        <form action="{{ route('admin.pengajuan.approve', $pengajuan) }}" method="POST">
-                            @csrf
-                            <button
-                                class="w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-lg shadow-green-200 dark:shadow-none transition-all active:scale-95 uppercase tracking-wider font-black mb-1">Terbitkan
-                                Surat (Approve)</button>
-                        </form>
+                        @if ($pengajuan->handled_by_admin === Auth::id())
+                            <form action="{{ route('admin.pengajuan.approve', $pengajuan) }}" method="POST"
+                                class="mb-3">
+                                @csrf
+                                <button
+                                    class="w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-lg shadow-green-200 dark:shadow-none transition-all active:scale-95 uppercase tracking-wider font-black">Terbitkan
+                                    Surat (Approve)</button>
+                            </form>
 
-                        <x-danger-button x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', 'reject-submission-modal')"
-                            class="w-full py-4 justify-center rounded-xl uppercase tracking-wider font-black">Tolak
-                            Pengajuan</x-danger-button>
+                            <div class="flex gap-2 w-full">
+                                <button type="button" x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'request-revision-modal')"
+                                    class="flex-1 py-3 bg-amber-100 hover:bg-amber-200 text-amber-800 dark:bg-amber-900/40 dark:text-amber-400 dark:hover:bg-amber-900/60 rounded-xl transition-all active:scale-95 uppercase tracking-wider font-black text-xs text-center">
+                                    Minta Revisi
+                                </button>
+
+                                <button type="button" x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'reject-submission-modal')"
+                                    class="flex-1 py-3 bg-red-100 hover:bg-red-200 text-red-800 dark:bg-red-900/40 dark:text-red-400 dark:hover:bg-red-900/60 rounded-xl transition-all active:scale-95 uppercase tracking-wider font-black text-xs text-center">
+                                    Tolak
+                                </button>
+                            </div>
+                        @else
+                            <div
+                                class="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl flex items-start gap-3">
+                                <svg class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <div>
+                                    <p
+                                        class="text-xs font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider">
+                                        Terkunci</p>
+                                    <p class="text-[10px] text-amber-700 dark:text-amber-500 mt-1">Pengajuan ini sedang
+                                        diproses oleh Admin lain dan tidak dapat dieksekusi.</p>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+
+                    @if ($pengajuan->status === 'validated')
+                        <div
+                            class="p-4 bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-800 rounded-xl flex items-start gap-3 mb-4">
+                            <svg class="w-5 h-5 text-sky-600 mt-0.5 flex-shrink-0" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div>
+                                <p class="text-xs font-bold text-sky-800 dark:text-sky-400 uppercase tracking-wider">
+                                    Menunggu Persetujuan</p>
+                                <p class="text-[10px] text-sky-700 dark:text-sky-500 mt-1">Draf surat telah dibuat dan
+                                    sedang menunggu persetujuan Kepala Desa.</p>
+                            </div>
+                        </div>
+
+                        <a href="{{ Storage::url($pengajuan->surat_path) }}" target="_blank"
+                            class="w-full flex items-center justify-center gap-2 py-4 bg-gray-900 hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 text-white rounded-xl shadow-lg transition-all active:scale-95 uppercase tracking-wider font-black text-xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            Lihat Draf Surat
+                        </a>
                     @endif
 
                     <div class="pt-4 border-t border-gray-100 dark:border-gray-700">
@@ -289,6 +347,36 @@
                     class="rounded-xl font-black uppercase tracking-wider">Batal</x-secondary-button>
                 <x-danger-button class="rounded-xl font-black uppercase tracking-wider">Konfirmasi
                     Tolak</x-danger-button>
+            </div>
+        </form>
+    </x-modal>
+
+    {{-- Request Revision Modal --}}
+    <x-modal name="request-revision-modal" focusable>
+        <form method="post" action="{{ route('admin.pengajuan.revision', $pengajuan) }}" class="p-8">
+            @csrf
+            <h2 class="text-xl font-black text-gray-900 dark:text-white tracking-tight uppercase">Minta Revisi
+                Pengajuan
+            </h2>
+            <p class="mt-2 text-sm font-bold text-gray-500 dark:text-gray-400">Berikan catatan revisi yang spesifik
+                agar
+                masyarakat dapat memperbaiki data atau dokumen yang salah.</p>
+
+            <div class="mt-6">
+                <x-input-label for="catatan_revisi" value="Catatan Revisi" class="sr-only" />
+                <textarea id="catatan_revisi" name="catatan_revisi" rows="4" required
+                    class="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all outline-none text-gray-900 dark:text-white"
+                    placeholder="Contoh: Tolong unggah ulang foto KTP karena buram dan tidak terbaca jelas."></textarea>
+                <x-input-error :messages="$errors->get('catatan_revisi')" class="mt-2" />
+            </div>
+
+            <div class="mt-8 flex justify-end gap-4">
+                <x-secondary-button x-on:click="$dispatch('close')"
+                    class="rounded-xl font-black uppercase tracking-wider">Batal</x-secondary-button>
+                <button type="submit"
+                    class="inline-flex items-center px-4 py-2 bg-amber-600 border border-transparent rounded-xl font-black text-xs text-white uppercase tracking-widest hover:bg-amber-700 focus:bg-amber-700 active:bg-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    Kirim Permintaan Revisi
+                </button>
             </div>
         </form>
     </x-modal>
