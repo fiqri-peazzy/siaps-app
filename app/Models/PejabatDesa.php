@@ -14,15 +14,17 @@ class PejabatDesa extends Model
         'jabatan_id',
         'nip',
         'sk_nomor',
-        'sk_tgl_mulai',
-        'sk_tgl_selesai',
-        'is_active',
+        'periode_mulai',
+        'periode_selesai',
+        'tanda_tangan',
+        'stempel_path',
+        'is_aktif',
     ];
 
     protected $casts = [
-        'sk_tgl_mulai' => 'date',
-        'sk_tgl_selesai' => 'date',
-        'is_active' => 'boolean',
+        'periode_mulai'   => 'date',
+        'periode_selesai' => 'date',
+        'is_aktif'        => 'boolean',
     ];
 
     public function user(): BelongsTo

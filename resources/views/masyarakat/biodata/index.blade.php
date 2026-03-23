@@ -20,6 +20,7 @@
         step: {{ $initialStep }},
         totalSteps: 3,
         nik: '{{ old('nik', $biodata->nik) }}',
+        no_kk: '{{ old('no_kk', $biodata->no_kk) }}',
         nama_lengkap: '{{ old('nama_lengkap', $biodata->nama_lengkap ?? Auth::user()->name) }}',
         tempat_lahir: '{{ old('tempat_lahir', $biodata->tempat_lahir) }}',
         tanggal_lahir: '{{ old('tanggal_lahir', $biodata->tanggal_lahir?->format('Y-m-d')) }}',
@@ -188,7 +189,7 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             {{-- NIK --}}
-                            <div class="md:col-span-2 space-y-1.5">
+                            <div class="space-y-1.5">
                                 <label for="nik"
                                     class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">NIK
                                     <span class="text-red-500">*</span></label>
@@ -197,6 +198,21 @@
                                     {{ $errors->has('nik') ? 'border-red-400 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-200 dark:border-gray-700 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500' }}"
                                     placeholder="16 Digit NIK Anda">
                                 @error('nik')
+                                    <p class="text-xs text-red-500 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            {{-- No KK --}}
+                            <div class="space-y-1.5">
+                                <label for="no_kk"
+                                    class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Nomor
+                                    KK
+                                    <span class="text-red-500">*</span></label>
+                                <input type="text" name="no_kk" id="no_kk" x-model="no_kk"
+                                    class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border rounded-xl outline-none transition-all text-gray-900 dark:text-white text-sm
+                                    {{ $errors->has('no_kk') ? 'border-red-400 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-200 dark:border-gray-700 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500' }}"
+                                    placeholder="16 Digit Nomor KK Anda">
+                                @error('no_kk')
                                     <p class="text-xs text-red-500 font-medium">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -232,8 +248,8 @@
                                 <label for="tanggal_lahir"
                                     class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Tanggal
                                     Lahir <span class="text-red-500">*</span></label>
-                                <input type="date" name="tanggal_lahir" id="tanggal_lahir" x-model="tanggal_lahir"
-                                    max="{{ now()->subDay()->format('Y-m-d') }}"
+                                <input type="date" name="tanggal_lahir" id="tanggal_lahir"
+                                    x-model="tanggal_lahir" max="{{ now()->subDay()->format('Y-m-d') }}"
                                     class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border rounded-xl outline-none transition-all text-gray-900 dark:text-white text-sm
                                     {{ $errors->has('tanggal_lahir') ? 'border-red-400' : 'border-gray-200 dark:border-gray-700 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500' }}">
                                 @error('tanggal_lahir')
@@ -605,6 +621,12 @@
                                 class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
                                 <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-1">NIK</p>
                                 <p class="text-gray-900 dark:text-white font-black text-base" x-text="nik || '—'"></p>
+                            </div>
+                            <div
+                                class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+                                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-1">No KK</p>
+                                <p class="text-gray-900 dark:text-white font-black text-base" x-text="no_kk || '—'">
+                                </p>
                             </div>
                             <div
                                 class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">

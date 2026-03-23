@@ -82,7 +82,8 @@
                                 <label
                                     class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">Nama
                                     Lengkap</label>
-                                <p class="text-gray-900 dark:text-white font-semibold">{{ Auth::user()->name }}</p>
+                                <p class="text-gray-900 dark:text-white font-semibold">
+                                    {{ $biodata->nama_lengkap ?? '-' }}</p>
                             </div>
                             <div>
                                 <label

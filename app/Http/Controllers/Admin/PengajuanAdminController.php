@@ -90,7 +90,13 @@ class PengajuanAdminController extends Controller
             $oldStatus = $pengajuan->status;
 
             // Generate PDF Draft
-            $pengajuan->load(['biodata.user', 'jenisSurat']);
+            $pengajuan->load([
+                'biodata.user',
+                'biodata.agama',
+                'biodata.pekerjaan',
+                'biodata.rt.parent.parent',
+                'jenisSurat.fields',
+            ]);
 
             // Check if directory exists
             if (!\Illuminate\Support\Facades\Storage::disk('public')->exists('surat_draft')) {
@@ -128,6 +134,7 @@ class PengajuanAdminController extends Controller
             return redirect()->route('admin.pengajuan.index')->with('success', 'Pengajuan divalidasi. Draf surat berhasil dibuat.');
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Gagal approve pengajuan: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ':' . $e->getLine());
             return back()->with('error', 'Gagal memvalidasi pengajuan: ' . $e->getMessage());
         }
     }
@@ -222,6 +229,54 @@ class PengajuanAdminController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Gagal meminta revisi: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Finalize the approved document
+     */
+    public function finalize(PengajuanSurat $pengajuan)
+    {
+        // Check if status is approved
+        if ($pengajuan->status !== 'approved') {
+            return back()->with('error', 'Hanya pengajuan yang telah disetujui Kepala Desa yang dapat difinalisasi.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $oldStatus = $pengajuan->status;
+
+            $pengajuan->update([
+                'status' => 'completed',
+                'completed_at' => now(),
+            ]);
+
+            PengajuanHistory::create([
+                'pengajuan_id' => $pengajuan->id,
+                'from_status' => $oldStatus,
+                'to_status' => 'completed',
+                'priority_score_saat_itu' => $pengajuan->priority_score,
+                'actor_id' => Auth::id(),
+                'actor_role' => 'admin',
+                'catatan' => 'Surat selesai dan siap diunduh oleh warga.',
+                'created_at' => now()
+            ]);
+
+            // Ensure user relationships exist, then send notification
+            if ($pengajuan->user) {
+                // We use our existing PengajuanStatusUpdated notification
+                $pengajuan->user->notify(new \App\Notifications\PengajuanStatusUpdated($pengajuan));
+            }
+
+            DB::commit();
+
+            return redirect()->route('admin.pengajuan.show', $pengajuan)
+                ->with('success', 'Surat berhasil diselesaikan dan notifikasi telah dikirim ke warga.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Finalize error: ' . $e->getMessage());
+            return back()->with('error', 'Gagal menyelesaikan surat: ' . $e->getMessage());
         }
     }
 }

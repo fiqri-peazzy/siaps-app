@@ -59,7 +59,8 @@
                                 clip-rule="evenodd" />
                         </svg>
                         <p class="text-sm font-bold text-green-800 dark:text-green-400">Surat telah disetujui. Nomor:
-                            <span class="font-black">{{ $pengajuan->nomor_surat }}</span></p>
+                            <span class="font-black">{{ $pengajuan->nomor_surat }}</span>
+                        </p>
                     </div>
                 @endif
 
@@ -161,6 +162,16 @@
                             </button>
                         </form>
 
+                        {{-- Edit Draft --}}
+                        <a href="{{ route('admin.kades.edit-draft', $pengajuan) }}"
+                            class="w-full flex items-center justify-center gap-2 py-3 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 text-blue-700 dark:text-blue-400 rounded-xl transition-all active:scale-95 uppercase tracking-wider font-black text-xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Edit Draf Surat
+                        </a>
+
                         <button type="button" x-data=""
                             x-on:click.prevent="$dispatch('open-modal', 'reject-kades-modal')"
                             class="w-full py-3 bg-red-100 hover:bg-red-200 text-red-800 dark:bg-red-900/40 dark:text-red-400 dark:hover:bg-red-900/60 rounded-xl transition-all active:scale-95 uppercase tracking-wider font-black text-xs">
@@ -177,7 +188,8 @@
         <form method="POST" action="{{ route('admin.kades.reject', $pengajuan) }}" class="p-8">
             @csrf
             <h2 class="text-xl font-black text-gray-900 dark:text-white tracking-tight uppercase">Tolak Draf Surat</h2>
-            <p class="mt-2 text-sm font-bold text-gray-500 dark:text-gray-400">Berikan alasan penolakan agar Admin dapat
+            <p class="mt-2 text-sm font-bold text-gray-500 dark:text-gray-400">Berikan alasan penolakan agar Admin
+                dapat
                 memperbaiki draf surat.</p>
             <div class="mt-6">
                 <textarea id="reason_kades" name="reason" rows="4" required

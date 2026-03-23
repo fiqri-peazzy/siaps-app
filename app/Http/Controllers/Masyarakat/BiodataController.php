@@ -34,6 +34,7 @@ class BiodataController extends Controller
 
         $request->validate([
             'nik'               => 'required|digits:16',
+            'no_kk'             => 'required|digits:16',
             'nama_lengkap'      => 'required|string|max:255',
             'tempat_lahir'      => 'required|string|max:100',
             'tanggal_lahir'     => 'required|date|before:today',

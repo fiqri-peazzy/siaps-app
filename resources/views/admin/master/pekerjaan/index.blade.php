@@ -137,7 +137,7 @@
                                             <button type="button"
                                                 data-modal-target="edit-pekerjaan-modal-{{ $p->id }}"
                                                 data-modal-toggle="edit-pekerjaan-modal-{{ $p->id }}"
-                                                class="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                class="inline-flex items-center gap-1 px-4 py-2 text-sm font-bold text-white rounded-xl bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all shadow-md hover:shadow-blue-500/20 active:scale-95">
                                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                     <path
                                                         d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
@@ -152,7 +152,7 @@
                                                 @csrf @method('DELETE')
                                                 <button type="submit"
                                                     onclick="return confirm('Yakin ingin menghapus?')"
-                                                    class="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                                                    class="inline-flex items-center gap-1 px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-xl hover:bg-red-600 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 transition-all shadow-md hover:shadow-red-500/20 active:scale-95">
                                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
                                                             d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 112 0v6a1 1 0 11-2 0V8z"
@@ -179,15 +179,18 @@
 
     <!-- Add Modal -->
     <div id="add-pekerjaan-modal" tabindex="-1" aria-hidden="true"
-        class="fixed top-0 left-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full">
-        <div class="relative w-full max-w-md max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Tambah Pekerjaan</h3>
+        class="fixed top-0 left-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full transition-all duration-300 ease-out">
+        <div class="relative w-full max-w-md max-h-full transition-transform duration-300 ease-out transform scale-95 opacity-0"
+            data-modal-content>
+            <div
+                class="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl dark:bg-gray-800/90 border border-white/20 dark:border-gray-700/30">
+                <div class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Tambah Pekerjaan</h3>
                     <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-9 h-9 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
                         data-modal-hide="add-pekerjaan-modal">
-                        <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                 stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
@@ -197,26 +200,26 @@
                     @csrf
                     <div class="p-6 space-y-4">
                         <div>
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
+                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Kode
                                 (Opsional)</label>
                             <input type="text" name="kode"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
                                 placeholder="P01">
                         </div>
                         <div>
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Nama
                                 Pekerjaan</label>
                             <input type="text" name="nama"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
                                 placeholder="Petani / PNS / dsb" required>
                         </div>
                     </div>
                     <div
-                        class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        class="flex items-center p-6 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-700">
                         <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>
+                            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-sm px-6 py-3 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 transition-all shadow-lg hover:shadow-blue-500/30 shadow-blue-500/20">Simpan</button>
                         <button type="button" data-modal-hide="add-pekerjaan-modal"
-                            class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Batal</button>
+                            class="py-3 px-6 text-sm font-bold text-gray-700 focus:outline-none bg-gray-100 rounded-xl border border-gray-200 hover:bg-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-600 transition-all">Batal</button>
                     </div>
                 </form>
             </div>
@@ -225,15 +228,17 @@
 
     @foreach ($pekerjaans as $p)
         <div id="edit-pekerjaan-modal-{{ $p->id }}" tabindex="-1" aria-hidden="true"
-            class="fixed top-0 left-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full">
-            <div class="relative w-full max-w-md max-h-full">
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Pekerjaan</h3>
+            class="fixed top-0 left-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full transition-all duration-300 ease-out">
+            <div class="relative w-full max-w-md max-h-full transition-transform duration-300 ease-out transform scale-95 opacity-0"
+                data-modal-content>
+                <div
+                    class="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl dark:bg-gray-800/90 border border-white/20 dark:border-gray-700/30">
+                    <div class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Edit Pekerjaan</h3>
                         <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-9 h-9 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
                             data-modal-hide="edit-pekerjaan-modal-{{ $p->id }}">
-                            <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -245,28 +250,61 @@
                         <div class="p-6 space-y-4">
                             <div>
                                 <label
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode</label>
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Kode</label>
                                 <input type="text" name="kode" value="{{ $p->kode }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none">
                             </div>
                             <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Nama
                                     Pekerjaan</label>
                                 <input type="text" name="nama" value="{{ $p->nama }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
                                     required>
                             </div>
                         </div>
                         <div
-                            class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                            class="flex items-center p-6 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-700">
                             <button type="submit"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
+                                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-sm px-6 py-3 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 transition-all shadow-lg hover:shadow-blue-500/30 shadow-blue-500/20">Update</button>
                             <button type="button" data-modal-hide="edit-pekerjaan-modal-{{ $p->id }}"
-                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Batal</button>
+                                class="py-3 px-6 text-sm font-bold text-gray-700 focus:outline-none bg-gray-100 rounded-xl border border-gray-200 hover:bg-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-600 transition-all">Batal</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     @endforeach
+
+    @push('scripts')
+        <script>
+            // Premium Modal Animation
+            document.querySelectorAll('[data-modal-target]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-modal-target');
+                    const modal = document.getElementById(targetId);
+                    const content = modal?.querySelector('[data-modal-content]');
+
+                    if (modal && content) {
+                        setTimeout(() => {
+                            content.classList.remove('scale-95', 'opacity-0');
+                            content.classList.add('scale-100', 'opacity-100');
+                        }, 10);
+                    }
+                });
+            });
+
+            document.querySelectorAll('[data-modal-hide]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-modal-hide');
+                    const modal = document.getElementById(targetId);
+                    const content = modal?.querySelector('[data-modal-content]');
+
+                    if (modal && content) {
+                        content.classList.remove('scale-100', 'opacity-100');
+                        content.classList.add('scale-95', 'opacity-0');
+                    }
+                });
+            });
+        </script>
+    @endpush
 </x-app-layout>

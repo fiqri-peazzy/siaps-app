@@ -14,7 +14,7 @@ class PendudukController extends Controller
 {
     public function index()
     {
-        $penduduks = Penduduk::with(['agama', 'pekerjaan', 'rt'])->latest()->paginate(10);
+        $penduduks = Penduduk::with(['agama', 'pekerjaan', 'rt', 'biodata'])->latest()->paginate(10);
         $agamas = MasterAgama::orderBy('nama')->get();
         $pekerjaans = MasterPekerjaan::orderBy('nama')->get();
         $rts = MasterWilayah::where('tipe', 'rt')->orderBy('nama')->get();

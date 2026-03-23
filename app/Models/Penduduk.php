@@ -50,4 +50,9 @@ class Penduduk extends Model
     {
         return $this->belongsTo(MasterWilayah::class, 'rt_id');
     }
+
+    public function biodata()
+    {
+        return $this->hasOne(BiodataMasyarakat::class, 'penduduk_id');
+    }
 }

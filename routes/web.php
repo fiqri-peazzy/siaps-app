@@ -56,6 +56,9 @@ Route::middleware(['auth', 'masyarakat'])->prefix('akun')->name('masyarakat.')->
         Route::put('/{pengajuan:kode_pengajuan}', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'update'])->name('update');
         Route::get('/{pengajuan:kode_pengajuan}', [\App\Http\Controllers\Masyarakat\PengajuanController::class, 'show'])->name('show');
     });
+
+    // Notifications
+    Route::post('/notifications/read-all', [\App\Http\Controllers\Masyarakat\NotificationController::class, 'readAll'])->name('notifications.readAll');
 });
 
 /*
@@ -93,18 +96,28 @@ Route::middleware('auth')->group(function () {
             Route::post('/{pengajuan}/approve', 'approve')->name('approve');
             Route::post('/{pengajuan}/reject', 'reject')->name('reject');
             Route::post('/{pengajuan}/revision', 'requestRevision')->name('revision');
+            Route::post('/{pengajuan}/finalize', 'finalize')->name('finalize');
         });
 
         // Kepala Desa Approval Dashboard
         Route::controller(\App\Http\Controllers\Admin\KepalaDasaController::class)->prefix('kades')->name('kades.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{pengajuan}', 'show')->name('show');
+            Route::get('/{pengajuan}/edit-draft', 'editDraft')->name('edit-draft');
+            Route::put('/{pengajuan}/update-draft', 'updateDraft')->name('update-draft');
             Route::post('/{pengajuan}/approve', 'approve')->name('approve');
             Route::post('/{pengajuan}/reject', 'reject')->name('reject');
         });
 
         Route::prefix('master')->name('master.')->group(function () {
             Route::resource('jenis-surat', \App\Http\Controllers\Admin\JenisSuratController::class);
+
+            // Syarat & Fields (Form Dinamis)
+            Route::prefix('jenis-surat/{jenis_surat}')->group(function () {
+                Route::resource('syarat', \App\Http\Controllers\Admin\SyaratSuratController::class);
+                Route::resource('fields', \App\Http\Controllers\Admin\JenisSuratFieldController::class);
+            });
+
             Route::resource('wilayah', \App\Http\Controllers\Admin\MasterWilayahController::class);
             Route::resource('agama', \App\Http\Controllers\Admin\MasterAgamaController::class);
             Route::resource('pekerjaan', \App\Http\Controllers\Admin\MasterPekerjaanController::class);

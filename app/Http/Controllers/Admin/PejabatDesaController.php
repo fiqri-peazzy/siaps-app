@@ -31,8 +31,8 @@ class PejabatDesaController extends Controller
             'jabatan_id' => 'required|exists:master_jabatan,id',
             'nip' => 'nullable|string|max:50',
             'sk_nomor' => 'nullable|string|max:100',
-            'sk_tgl_mulai' => 'nullable|date',
-            'sk_tgl_selesai' => 'nullable|date',
+            'periode_mulai' => 'required|date',
+            'periode_selesai' => 'nullable|date',
         ]);
 
         PejabatDesa::create($validated);
@@ -41,27 +41,27 @@ class PejabatDesaController extends Controller
             ->with('success', 'Pejabat Desa berhasil ditambahkan.');
     }
 
-    public function update(Request $request, PejabatDesa $pejabatDesa)
+    public function update(Request $request, PejabatDesa $pejabat_desa)
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'jabatan_id' => 'required|exists:master_jabatan,id',
             'nip' => 'nullable|string|max:50',
             'sk_nomor' => 'nullable|string|max:100',
-            'sk_tgl_mulai' => 'nullable|date',
-            'sk_tgl_selesai' => 'nullable|date',
-            'is_active' => 'required|boolean',
+            'periode_mulai' => 'required|date',
+            'periode_selesai' => 'nullable|date',
+            'is_aktif' => 'required|boolean',
         ]);
 
-        $pejabatDesa->update($validated);
+        $pejabat_desa->update($validated);
 
         return redirect()->route('admin.master.pejabat-desa.index')
             ->with('success', 'Pejabat Desa berhasil diperbarui.');
     }
 
-    public function destroy(PejabatDesa $pejabatDesa)
+    public function destroy(PejabatDesa $pejabat_desa)
     {
-        $pejabatDesa->delete();
+        $pejabat_desa->delete();
         return redirect()->route('admin.master.pejabat-desa.index')
             ->with('success', 'Pejabat Desa berhasil dihapus.');
     }

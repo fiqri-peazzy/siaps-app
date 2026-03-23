@@ -137,4 +137,81 @@ class KepalaDasaController extends Controller
             return back()->with('error', 'Gagal menolak surat: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Show the draft edit form
+     */
+    public function editDraft(PengajuanSurat $pengajuan)
+    {
+        if (!in_array($pengajuan->status, ['validated', 'approved'])) {
+            return back()->with('error', 'Draf hanya bisa diedit saat status validated atau approved.');
+        }
+
+        $pengajuan->load([
+            'biodata.user',
+            'jenisSurat.fields',
+        ]);
+
+        return view('admin.kades.edit_draft', compact('pengajuan'));
+    }
+
+    /**
+     * Save draft edits and regenerate the PDF
+     */
+    public function updateDraft(Request $request, PengajuanSurat $pengajuan)
+    {
+        if (!in_array($pengajuan->status, ['validated', 'approved'])) {
+            return back()->with('error', 'Draf tidak dapat diperbarui pada status ini.');
+        }
+
+        // Build updated field_data from request
+        $fieldData = $pengajuan->field_data ?? [];
+        foreach ($fieldData as $key => $oldVal) {
+            if ($request->has('field_' . $key)) {
+                $fieldData[$key] = $request->input('field_' . $key);
+            }
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $pengajuan->update([
+                'nomor_surat' => $request->input('nomor_surat', $pengajuan->nomor_surat),
+                'field_data'  => $fieldData,
+            ]);
+
+            // Regenerate PDF with new data
+            $pengajuan->load([
+                'biodata.user',
+                'biodata.agama',
+                'biodata.pekerjaan',
+                'biodata.rt.parent.parent',
+                'jenisSurat.fields',
+            ]);
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.draft.default', compact('pengajuan'));
+            $filename = 'draft_' . $pengajuan->kode_pengajuan . '_' . time() . '.pdf';
+            $path = 'surat_draft/' . $filename;
+
+            // Delete old file if exists
+            if ($pengajuan->surat_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($pengajuan->surat_path);
+            }
+
+            \Illuminate\Support\Facades\Storage::disk('public')->put($path, $pdf->output());
+
+            $pengajuan->update([
+                'surat_path'          => $path,
+                'surat_generated_at'  => now(),
+            ]);
+
+            DB::commit();
+            return redirect()->route('admin.kades.show', $pengajuan)
+                ->with('success', 'Draf surat berhasil diperbarui dan PDF telah di-regenerate.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Gagal update draft: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memperbarui draf: ' . $e->getMessage());
+        }
+    }
 }

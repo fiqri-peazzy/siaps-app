@@ -18,7 +18,18 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">ID: {{ $pengajuan->kode_pengajuan }}
                     </p>
                 </div>
-                <div>
+                <div class="flex items-center gap-3">
+                    @if ($pengajuan->status === 'completed' && $pengajuan->surat_path)
+                        <a href="{{ Storage::url($pengajuan->surat_path) }}" target="_blank"
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-teal-200 dark:shadow-none transition-all active:scale-95">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Unduh Surat Final
+                        </a>
+                    @endif
+
                     @php
                         $statusColors = [
                             'submitted' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-400',
@@ -26,6 +37,8 @@
                             'approved' => 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400',
                             'rejected' => 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-400',
                             'ready' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-400',
+                            'completed' =>
+                                'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-400',
                         ];
                     @endphp
                     <span

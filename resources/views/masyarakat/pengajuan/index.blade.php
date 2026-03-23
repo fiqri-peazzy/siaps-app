@@ -210,9 +210,10 @@
                                                 'queued' => ['bg-blue-100/50 text-blue-700', 'Dalam Antrian'],
                                                 'in_process' => ['bg-indigo-100/50 text-indigo-700', 'Sedang Diproses'],
                                                 'need_revision' => ['bg-red-100/50 text-red-700', 'Perlu Revisi'],
-                                                'validated' => ['bg-sky-100/50 text-sky-700', 'Menunggu TTD Kades'],
-                                                'approved' => ['bg-green-100/50 text-green-700', 'Disetujui Kades'],
-                                                'ready' => ['bg-teal-100/50 text-teal-700', 'Surat Siap Diunduh'],
+                                                'validated' => ['bg-sky-100/50 text-sky-700', 'Diproses Kades'],
+                                                'approved' => ['bg-sky-100/50 text-sky-700', 'Diproses Kades'],
+                                                'ready' => ['bg-teal-100/50 text-teal-700', 'Selesai'],
+                                                'completed' => ['bg-teal-100/50 text-teal-700', 'Selesai'],
                                                 'rejected' => ['bg-gray-700 text-white', 'Ditolak'],
                                             ];
                                             $currentStatus = $statuses[$s->status] ?? [
@@ -227,6 +228,18 @@
                                     </td>
                                     <td class="px-6 py-5">
                                         <div class="flex items-center justify-end gap-2">
+                                            @if ($s->status === 'completed' && $s->surat_path)
+                                                <a href="{{ Storage::url($s->surat_path) }}" target="_blank"
+                                                    class="inline-flex items-center justify-center p-2 bg-teal-100 dark:bg-teal-900/40 hover:bg-teal-600 hover:text-white text-teal-700 dark:text-teal-400 rounded-xl transition-all"
+                                                    title="Unduh Surat (Final)">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                                    </svg>
+                                                </a>
+                                            @endif
                                             @if ($s->status === 'need_revision')
                                                 <a href="{{ route('masyarakat.pengajuan.edit', $s->kode_pengajuan) }}"
                                                     class="inline-flex items-center justify-center p-2 bg-amber-100 dark:bg-amber-900/40 hover:bg-amber-500 hover:text-white text-amber-600 dark:text-amber-400 rounded-xl transition-all"

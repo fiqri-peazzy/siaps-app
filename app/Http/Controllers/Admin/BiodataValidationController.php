@@ -36,7 +36,7 @@ class BiodataValidationController extends Controller
             $penduduk = Penduduk::updateOrCreate(
                 ['nik' => $biodata->nik],
                 [
-                    'no_kk' => $request->no_kk ?? $biodata->nik, // Default to NIK if not provided, though KK is usually in biodata
+                    'no_kk' => $biodata->no_kk ?? $biodata->nik,
                     'nama_lengkap' => $biodata->nama_lengkap,
                     'tempat_lahir' => $biodata->tempat_lahir,
                     'tanggal_lahir' => $biodata->tanggal_lahir,

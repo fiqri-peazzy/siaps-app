@@ -165,17 +165,25 @@
                                             </div>
                                         </td>
                                         <td class="p-4 space-x-2 whitespace-nowrap">
+                                            <a href="{{ route('admin.master.syarat.index', $js) }}"
+                                                class="inline-flex items-center px-4 py-2 text-sm font-bold text-center text-white rounded-xl bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800 transition-all shadow-md hover:shadow-purple-500/20 active:scale-95">
+                                                Syarat
+                                            </a>
+                                            <a href="{{ route('admin.master.fields.index', $js) }}"
+                                                class="inline-flex items-center px-4 py-2 text-sm font-bold text-center text-white rounded-xl bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800 transition-all shadow-md hover:shadow-orange-500/20 active:scale-95">
+                                                Form
+                                            </a>
                                             <button type="button"
                                                 data-modal-target="edit-surat-modal-{{ $js->id }}"
                                                 data-modal-toggle="edit-surat-modal-{{ $js->id }}"
-                                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                class="inline-flex items-center px-4 py-2 text-sm font-bold text-center text-white rounded-xl bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all shadow-md hover:shadow-blue-500/20 active:scale-95">
                                                 Edit
                                             </button>
                                             <form action="{{ route('admin.master.jenis-surat.destroy', $js) }}"
                                                 method="POST" class="inline">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" onclick="return confirm('Yakin hapus?')"
-                                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                                                    class="inline-flex items-center px-4 py-2 text-sm font-bold text-center text-white bg-red-500 rounded-xl hover:bg-red-600 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 transition-all shadow-md hover:shadow-red-500/20 active:scale-95">
                                                     Hapus
                                                 </button>
                                             </form>
@@ -198,16 +206,18 @@
 
     <!-- Add Modal -->
     <div id="add-surat-modal" tabindex="-1" aria-hidden="true"
-        class="fixed top-0 left-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full">
-        <div class="relative w-full max-w-2xl max-h-full">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Tambah Jenis Surat</h3>
+        class="fixed top-0 left-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full transition-all duration-300 ease-out">
+        <div class="relative w-full max-w-2xl max-h-full transition-transform duration-300 ease-out transform scale-95 opacity-0"
+            data-modal-content>
+            <div
+                class="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl dark:bg-gray-800/90 border border-white/20 dark:border-gray-700/30">
+                <div class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Tambah Jenis Surat</h3>
                     <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-9 h-9 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
                         data-modal-hide="add-surat-modal">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 14 14">
+                        <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                 stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
@@ -218,55 +228,58 @@
                     <div class="p-6 space-y-6">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
+                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Kode
                                     Surat</label>
                                 <input type="text" name="kode"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
                                     placeholder="SKU" required>
                             </div>
                             <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Nama
                                     Surat</label>
                                 <input type="text" name="nama"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
                                     placeholder="Surat Keterangan Usaha" required>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Priority
+                                <label
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Priority
                                     (1-10)</label>
                                 <input type="number" name="base_priority" min="1" max="10"
                                     value="5"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
                                     required>
                             </div>
                             <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">SLA
+                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">SLA
                                     (Hari)</label>
                                 <input type="number" name="sla_hari" min="1" value="3"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
                                     required>
                             </div>
                         </div>
                         <div>
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Format
+                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Format
                                 Nomor</label>
                             <input type="text" name="nomor_format"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
                                 placeholder="400/{counter}/DS.A/2026">
                         </div>
                         <div>
                             <label
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
+                                class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Deskripsi</label>
                             <textarea name="deskripsi" rows="3"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"></textarea>
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"></textarea>
                         </div>
                     </div>
                     <div
-                        class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        class="flex items-center p-6 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-700">
                         <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>
+                            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-sm px-6 py-3 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 transition-all shadow-lg hover:shadow-blue-500/30 shadow-blue-500/20">Simpan</button>
+                        <button type="button" data-modal-hide="add-surat-modal"
+                            class="py-3 px-6 text-sm font-bold text-gray-700 focus:outline-none bg-gray-100 rounded-xl border border-gray-200 hover:bg-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-600 transition-all">Batal</button>
                     </div>
                 </form>
             </div>
@@ -276,15 +289,17 @@
     @foreach ($jenisSurats as $js)
         <!-- Edit Modal -->
         <div id="edit-surat-modal-{{ $js->id }}" tabindex="-1" aria-hidden="true"
-            class="fixed top-0 left-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full">
-            <div class="relative w-full max-w-2xl max-h-full">
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Jenis Surat</h3>
+            class="fixed top-0 left-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full transition-all duration-300 ease-out">
+            <div class="relative w-full max-w-2xl max-h-full transition-transform duration-300 ease-out transform scale-95 opacity-0"
+                data-modal-content>
+                <div
+                    class="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl dark:bg-gray-800/90 border border-white/20 dark:border-gray-700/30">
+                    <div class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Edit Jenis Surat</h3>
                         <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-9 h-9 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
                             data-modal-hide="edit-surat-modal-{{ $js->id }}">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -296,70 +311,108 @@
                         <div class="p-6 space-y-6">
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
+                                    <label
+                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Kode
                                         Surat</label>
                                     <input type="text" name="kode" value="{{ $js->kode }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
                                         required>
                                 </div>
                                 <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                                    <label
+                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Nama
                                         Surat</label>
                                     <input type="text" name="nama" value="{{ $js->nama }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
                                         required>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Priority
+                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Priority
                                         (1-10)
                                     </label>
                                     <input type="number" name="base_priority" min="1" max="10"
                                         value="{{ $js->base_priority }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
                                         required>
                                 </div>
                                 <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">SLA
+                                    <label
+                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">SLA
                                         (Hari)</label>
                                     <input type="number" name="sla_hari" min="1"
                                         value="{{ $js->sla_hari }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
                                         required>
                                 </div>
                             </div>
                             <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Format
+                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Format
                                     Nomor</label>
                                 <input type="text" name="nomor_format" value="{{ $js->nomor_format }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none">
                             </div>
                             <div>
                                 <label
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Status</label>
                                 <select name="is_active"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none">
                                     <option value="1" {{ $js->is_active ? 'selected' : '' }}>Aktif</option>
                                     <option value="0" {{ !$js->is_active ? 'selected' : '' }}>Nonaktif</option>
                                 </select>
                             </div>
                             <div>
                                 <label
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Deskripsi</label>
                                 <textarea name="deskripsi" rows="3"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white">{{ $js->deskripsi }}</textarea>
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none">{{ $js->deskripsi }}</textarea>
                             </div>
                         </div>
                         <div
-                            class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                            class="flex items-center p-6 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-700">
                             <button type="submit"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
+                                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-sm px-6 py-3 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 transition-all shadow-lg hover:shadow-blue-500/30 shadow-blue-500/20">Update</button>
+                            <button type="button" data-modal-hide="edit-surat-modal-{{ $js->id }}"
+                                class="py-3 px-6 text-sm font-bold text-gray-700 focus:outline-none bg-gray-100 rounded-xl border border-gray-200 hover:bg-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-600 transition-all">Batal</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     @endforeach
+
+    @push('scripts')
+        <script>
+            // Premium Modal Animation
+            document.querySelectorAll('[data-modal-target]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-modal-target');
+                    const modal = document.getElementById(targetId);
+                    const content = modal?.querySelector('[data-modal-content]');
+
+                    if (modal && content) {
+                        setTimeout(() => {
+                            content.classList.remove('scale-95', 'opacity-0');
+                            content.classList.add('scale-100', 'opacity-100');
+                        }, 10);
+                    }
+                });
+            });
+
+            document.querySelectorAll('[data-modal-hide]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-modal-hide');
+                    const modal = document.getElementById(targetId);
+                    const content = modal?.querySelector('[data-modal-content]');
+
+                    if (modal && content) {
+                        content.classList.remove('scale-100', 'opacity-100');
+                        content.classList.add('scale-95', 'opacity-0');
+                    }
+                });
+            });
+        </script>
+    @endpush
 </x-app-layout>

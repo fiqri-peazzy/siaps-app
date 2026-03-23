@@ -12,6 +12,7 @@ class BiodataMasyarakat extends Model
         'user_id',
         'penduduk_id',
         'nik',
+        'no_kk',
         'nama_lengkap',
         'tempat_lahir',
         'tanggal_lahir',
