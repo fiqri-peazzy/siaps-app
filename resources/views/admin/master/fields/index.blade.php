@@ -86,8 +86,7 @@
                         </th>
                         <th class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                             Required</th>
-                        <th
-                            class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400 text-right">
+                        <th class="p-4 text-xs font-medium text-gray-500 uppercase dark:text-gray-400 text-right">
                             Aksi</th>
                     </tr>
                 </thead>
@@ -156,34 +155,36 @@
                     <div class="p-6 space-y-4">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Field
-                                    Label</label>
+                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Label
+                                    Field (Nama Field)</label>
                                 <input type="text" name="field_label"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                    placeholder="Nama Usaha" required>
+                                    class="js-field-label bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
+                                    placeholder="Contoh: Nama Usaha" required>
+                                <p class="mt-1 text-xs text-gray-500">Nama yang akan muncul di form masyarakat.</p>
                             </div>
                             <div>
-                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Field
-                                    Key (Unique ID)</label>
+                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">ID
+                                    Field (Otomatis)</label>
                                 <input type="text" name="field_key"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    class="js-field-key js-slug-target bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-xl block w-full p-3 dark:bg-gray-700/50 dark:border-gray-600 dark:text-gray-400"
                                     placeholder="nama_usaha" required>
+                                <p class="mt-1 text-xs text-gray-400 italic">Terisi otomatis dari label.</p>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Tipe
-                                    Field</label>
+                                    Input</label>
                                 <select name="field_type"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    <option value="text">Text</option>
-                                    <option value="textarea">Textarea</option>
-                                    <option value="number">Number</option>
-                                    <option value="date">Date</option>
-                                    <option value="select">Select (Dropdown)</option>
-                                    <option value="radio">Radio Button</option>
-                                    <option value="checkbox">Checkbox</option>
-                                    <option value="file">File Upload</option>
+                                    class="js-field-type bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    <option value="text">Teks Pendek</option>
+                                    <option value="textarea">Teks Panjang (Paragraf)</option>
+                                    <option value="number">Angka</option>
+                                    <option value="date">Tanggal</option>
+                                    <option value="select">Pilihan Dropdown</option>
+                                    <option value="radio">Tombol Pilih Satu (Radio)</option>
+                                    <option value="checkbox">Pilih Banyak (Checkbox)</option>
+                                    <option value="file">Upload File Tambahan</option>
                                 </select>
                             </div>
                             <div>
@@ -195,43 +196,83 @@
                             </div>
                         </div>
                         <div>
-                            <label
-                                class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Placeholder</label>
+                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Contoh Isi
+                                (Placeholder)</label>
                             <input type="text" name="placeholder"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 placeholder="Masukkan nama usaha anda">
                         </div>
-                        <div>
-                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Options
-                                (JSON - untuk Select/Radio/Checkbox)</label>
-                            <textarea name="field_options" rows="2"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono"
-                                placeholder='["Option 1", "Option 2"]'></textarea>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Wajib
-                                    Diisi?</label>
-                                <select name="is_required"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    <option value="1">Wajib</option>
-                                    <option value="0">Opsional</option>
-                                </select>
+
+                        <!-- Options UI (Conditional) -->
+                        <div
+                            class="js-options-container hidden p-4 bg-blue-50/50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800/50">
+                            <label class="block mb-3 text-sm font-bold text-blue-800 dark:text-blue-300">Daftar Pilihan
+                                (Opsi)</label>
+                            <div class="js-options-list space-y-2 mb-3">
+                                <!-- Dynamic options here -->
                             </div>
-                            <div>
-                                <label
-                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Validation
-                                    Rules (Laravel)</label>
-                                <input type="text" name="validation_rules"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                    placeholder="min:5|max:100">
+                            <button type="button"
+                                class="js-add-option text-sm text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+                                </svg>
+                                Tambah Pilihan Baru
+                            </button>
+                        </div>
+
+                        <!-- Validation UI (Simplified) -->
+                        <div class="p-4 dark:bg-gray-900/40 rounded-2xl border border-gray-200 dark:border-gray-700">
+                            <label class="block mb-3 text-sm font-bold text-gray-800 dark:text-gray-200">Aturan
+                                Pengisian</label>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="hidden" name="is_required" value="0">
+                                    <input type="checkbox" name="is_required" value="1" checked
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Wajib
+                                        Diisi</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="val_numeric" value="1"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Hanya
+                                        Angka</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="val_email" value="1"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Format
+                                        Email</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="val_alphabet" value="1"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Hanya
+                                        Huruf</span>
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-1 text-xs font-semibold text-gray-500">Min Karakter</label>
+                                    <input type="number" name="val_min"
+                                        class="bg-white border border-gray-300 text-sm rounded-lg block w-full p-2 dark:bg-gray-600 dark:border-gray-500"
+                                        placeholder="Contoh: 3">
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-xs font-semibold text-gray-500">Max Karakter</label>
+                                    <input type="number" name="val_max"
+                                        class="bg-white border border-gray-300 text-sm rounded-lg block w-full p-2 dark:bg-gray-600 dark:border-gray-500"
+                                        placeholder="Contoh: 100">
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div
                         class="flex items-center p-6 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-700">
                         <button type="submit"
-                            class="text-white bg-blue-600 hover:bg-blue-700 font-bold rounded-xl text-sm px-6 py-3 shadow-lg transition-all">Simpan</button>
+                            class="text-white bg-blue-600 hover:bg-blue-700 font-bold rounded-xl text-sm px-6 py-3 shadow-lg transition-all">Simpan
+                            Field</button>
                         <button type="button" data-modal-hide="add-field-modal"
                             class="py-3 px-6 text-sm font-bold text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-all">Batal</button>
                     </div>
@@ -241,6 +282,22 @@
     </div>
 
     @foreach ($fields as $field)
+        @php
+            $rulesArray = explode('|', $field->validation_rules ?? '');
+            $hasNumeric = in_array('numeric', $rulesArray);
+            $hasEmail = in_array('email', $rulesArray);
+            $hasAlpha = in_array('alpha', $rulesArray);
+            $minVal = null;
+            $maxVal = null;
+            foreach ($rulesArray as $rule) {
+                if (str_starts_with($rule, 'min:')) {
+                    $minVal = str_replace('min:', '', $rule);
+                }
+                if (str_starts_with($rule, 'max:')) {
+                    $maxVal = str_replace('max:', '', $rule);
+                }
+            }
+        @endphp
         <!-- Edit Modal -->
         <div id="edit-field-modal-{{ $field->id }}" tabindex="-1" aria-hidden="true"
             class="fixed top-0 left-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full transition-all duration-300">
@@ -264,95 +321,153 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label
-                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Field
-                                        Label</label>
+                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Label
+                                        Field</label>
                                     <input type="text" name="field_label" value="{{ $field->field_label }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                        class="js-field-label bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required>
                                 </div>
                                 <div>
-                                    <label
-                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Field
-                                        Key</label>
+                                    <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">ID
+                                        Field (Read Only)</label>
                                     <input type="text" name="field_key" value="{{ $field->field_key }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                        required>
+                                        class="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-xl block w-full p-3 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-400 cursor-not-allowed"
+                                        readonly required>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label
                                         class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Tipe
-                                        Field</label>
+                                        Input</label>
                                     <select name="field_type"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        class="js-field-type bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                         <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>
-                                            Text</option>
+                                            Teks Pendek</option>
                                         <option value="textarea"
-                                            {{ $field->field_type == 'textarea' ? 'selected' : '' }}>Textarea</option>
+                                            {{ $field->field_type == 'textarea' ? 'selected' : '' }}>Teks Panjang
+                                        </option>
                                         <option value="number" {{ $field->field_type == 'number' ? 'selected' : '' }}>
-                                            Number</option>
+                                            Angka</option>
                                         <option value="date" {{ $field->field_type == 'date' ? 'selected' : '' }}>
-                                            Date</option>
+                                            Tanggal</option>
                                         <option value="select" {{ $field->field_type == 'select' ? 'selected' : '' }}>
-                                            Select (Dropdown)</option>
+                                            Pilihan Dropdown</option>
                                         <option value="radio" {{ $field->field_type == 'radio' ? 'selected' : '' }}>
-                                            Radio Button</option>
+                                            Tombol Pilih Satu</option>
                                         <option value="checkbox"
-                                            {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>Checkbox</option>
+                                            {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>Pilih Banyak
+                                        </option>
                                         <option value="file" {{ $field->field_type == 'file' ? 'selected' : '' }}>
-                                            File Upload</option>
+                                            Upload File</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label
-                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Urutan
-                                        Tampil</label>
+                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Urutan</label>
                                     <input type="number" name="urutan" value="{{ $field->urutan }}"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required>
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Placeholder</label>
+                                <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Contoh
+                                    Isi</label>
                                 <input type="text" name="placeholder" value="{{ $field->placeholder }}"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             </div>
-                            <div>
-                                <label
-                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Options
-                                    (JSON)</label>
-                                <textarea name="field_options" rows="2"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono">{{ json_encode($field->field_options) }}</textarea>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label
-                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Wajib
-                                        Diisi?</label>
-                                    <select name="is_required"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                        <option value="1" {{ $field->is_required ? 'selected' : '' }}>Wajib
-                                        </option>
-                                        <option value="0" {{ !$field->is_required ? 'selected' : '' }}>Opsional
-                                        </option>
-                                    </select>
+
+                            <!-- Options UI (Conditional) -->
+                            <div
+                                class="js-options-container {{ in_array($field->field_type, ['select', 'radio', 'checkbox']) ? '' : 'hidden' }} p-4 bg-blue-50/50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800/50">
+                                <label class="block mb-3 text-sm font-bold text-blue-800 dark:text-blue-300">Daftar
+                                    Pilihan</label>
+                                <div class="js-options-list space-y-2 mb-3">
+                                    @if ($field->field_options)
+                                        @foreach ($field->field_options as $opt)
+                                            <div class="flex items-center gap-2">
+                                                <input type="text" name="options[]" value="{{ $opt }}"
+                                                    class="bg-white border border-gray-300 text-sm rounded-lg block w-full p-2 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
+                                                <button type="button"
+                                                    class="js-remove-option text-red-500 hover:text-red-700"><svg
+                                                        class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
+                                                            clip-rule="evenodd" />
+                                                    </svg></button>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
-                                <div>
-                                    <label
-                                        class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Validation
-                                        Rules</label>
-                                    <input type="text" name="validation_rules"
-                                        value="{{ $field->validation_rules }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <button type="button"
+                                    class="js-add-option text-sm text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+                                    </svg>
+                                    Tambah Pilihan Baru
+                                </button>
+                            </div>
+
+                            <!-- Validation UI (Simplified) -->
+                            <div
+                                class="p-4 dark:bg-gray-700/50 rounded-2xl border border-gray-200 dark:border-gray-700">
+                                <label class="block mb-3 text-sm font-bold text-gray-800 dark:text-gray-200">Aturan
+                                    Pengisian</label>
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="hidden" name="is_required" value="0">
+                                        <input type="checkbox" name="is_required" value="1"
+                                            {{ $field->is_required ? 'checked' : '' }}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Wajib
+                                            Diisi</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="val_numeric" value="1"
+                                            {{ $hasNumeric ? 'checked' : '' }}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Hanya
+                                            Angka</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="val_email" value="1"
+                                            {{ $hasEmail ? 'checked' : '' }}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Format
+                                            Email</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="val_alphabet" value="1"
+                                            {{ $hasAlpha ? 'checked' : '' }}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Hanya
+                                            Huruf</span>
+                                    </label>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-gray-500">Min
+                                            Karakter</label>
+                                        <input type="number" name="val_min" value="{{ $minVal }}"
+                                            class="bg-white border border-gray-300 text-sm rounded-lg block w-full p-2 dark:bg-gray-600 dark:border-gray-500"
+                                            placeholder="Contoh: 3">
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-gray-500">Max
+                                            Karakter</label>
+                                        <input type="number" name="val_max" value="{{ $maxVal }}"
+                                            class="bg-white border border-gray-300 text-sm rounded-lg block w-full p-2 dark:bg-gray-600 dark:border-gray-500"
+                                            placeholder="Contoh: 100">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div
                             class="flex items-center p-6 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-700">
                             <button type="submit"
-                                class="text-white bg-blue-600 hover:bg-blue-700 font-bold rounded-xl text-sm px-6 py-3 shadow-lg transition-all">Update</button>
+                                class="text-white bg-blue-600 hover:bg-blue-700 font-bold rounded-xl text-sm px-6 py-3 shadow-lg transition-all">Update
+                                Field</button>
                             <button type="button" data-modal-hide="edit-field-modal-{{ $field->id }}"
                                 class="py-3 px-6 text-sm font-bold text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-all">Batal</button>
                         </div>
@@ -364,29 +479,97 @@
 
     @push('scripts')
         <script>
-            document.querySelectorAll('[data-modal-target]').forEach(button => {
-                button.addEventListener('click', () => {
-                    const targetId = button.getAttribute('data-modal-target');
-                    const modal = document.getElementById(targetId);
-                    const content = modal?.querySelector('[data-modal-content]');
-                    if (modal && content) {
-                        setTimeout(() => {
-                            content.classList.remove('scale-95', 'opacity-0');
-                            content.classList.add('scale-100', 'opacity-100');
-                        }, 10);
+            document.addEventListener('DOMContentLoaded', function() {
+                // Slugify function
+                const slugify = (text) => {
+                    return text.toString().toLowerCase()
+                        .replace(/\s+/g, '_') // Replace spaces with _
+                        .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+                        .replace(/\-\-+/g, '_') // Replace multiple - with single _
+                        .replace(/^-+/, '') // Trim - from start of text
+                        .replace(/-+$/, ''); // Trim - from end of text
+                };
+
+                // Handle Label to Key Auto-slugify
+                document.querySelectorAll('.js-field-label').forEach(input => {
+                    input.addEventListener('input', function() {
+                        const form = this.closest('form');
+                        const keyInput = form.querySelector('.js-field-key');
+                        // Only auto-slugify if it's the ADD modal (we don't want to change keys in EDIT mode)
+                        if (keyInput && keyInput.classList.contains('js-slug-target')) {
+                            keyInput.value = slugify(this.value);
+                        }
+                    });
+                });
+
+                // Handle Field Type Change (Show/Hide Options)
+                document.querySelectorAll('.js-field-type').forEach(select => {
+                    select.addEventListener('change', function() {
+                        const form = this.closest('form');
+                        const optionsContainer = form.querySelector('.js-options-container');
+                        const choiceTypes = ['select', 'radio', 'checkbox'];
+
+                        if (choiceTypes.includes(this.value)) {
+                            optionsContainer.classList.remove('hidden');
+                            // Add an initial option if list is empty
+                            const list = optionsContainer.querySelector('.js-options-list');
+                            if (list.children.length === 0) {
+                                addOption(list);
+                            }
+                        } else {
+                            optionsContainer.classList.add('hidden');
+                        }
+                    });
+                });
+
+                // Dynamic Options Management
+                const addOption = (list) => {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center gap-2';
+                    div.innerHTML = `
+                    <input type="text" name="options[]" class="bg-white border border-gray-300 text-sm rounded-lg block w-full p-2 dark:bg-gray-600 dark:border-gray-500 dark:text-white" placeholder="Masukkan pilihan">
+                    <button type="button" class="js-remove-option text-red-500 hover:text-red-700">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
+                    </button>
+                `;
+                    list.appendChild(div);
+                };
+
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('.js-add-option')) {
+                        const list = e.target.closest('form').querySelector('.js-options-list');
+                        addOption(list);
+                    }
+                    if (e.target.closest('.js-remove-option')) {
+                        e.target.closest('.flex').remove();
                     }
                 });
-            });
 
-            document.querySelectorAll('[data-modal-hide]').forEach(button => {
-                button.addEventListener('click', () => {
-                    const targetId = button.getAttribute('data-modal-hide');
-                    const modal = document.getElementById(targetId);
-                    const content = modal?.querySelector('[data-modal-content]');
-                    if (modal && content) {
-                        content.classList.remove('scale-100', 'opacity-100');
-                        content.classList.add('scale-95', 'opacity-0');
-                    }
+                // Modal Logic
+                document.querySelectorAll('[data-modal-target]').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetId = button.getAttribute('data-modal-target');
+                        const modal = document.getElementById(targetId);
+                        const content = modal?.querySelector('[data-modal-content]');
+                        if (modal && content) {
+                            setTimeout(() => {
+                                content.classList.remove('scale-95', 'opacity-0');
+                                content.classList.add('scale-100', 'opacity-100');
+                            }, 10);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('[data-modal-hide]').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetId = button.getAttribute('data-modal-hide');
+                        const modal = document.getElementById(targetId);
+                        const content = modal?.querySelector('[data-modal-content]');
+                        if (modal && content) {
+                            content.classList.remove('scale-100', 'opacity-100');
+                            content.classList.add('scale-95', 'opacity-0');
+                        }
+                    });
                 });
             });
         </script>

@@ -149,7 +149,7 @@
                 </div>
                 <form action="{{ route('admin.master.syarat.store', $jenisSurat) }}" method="POST">
                     @csrf
-                    <div class="p-6 space-y-4">
+                    <div class="p-6 space-y-4 bg-white dark:bg-gray-800 rounded-b-2xl">
                         <div>
                             <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Nama
                                 Syarat</label>
@@ -221,7 +221,7 @@
                     </div>
                     <form action="{{ route('admin.master.syarat.update', [$jenisSurat, $syarat]) }}" method="POST">
                         @csrf @method('PUT')
-                        <div class="p-6 space-y-4">
+                        <div class="p-6 space-y-4 bg-white dark:bg-gray-800 rounded-b-2xl">
                             <div>
                                 <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Nama
                                     Syarat</label>

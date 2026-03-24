@@ -21,12 +21,24 @@ class JenisSuratFieldController extends Controller
             'field_key' => 'required|string|max:50',
             'field_label' => 'required|string|max:100',
             'field_type' => 'required|in:text,textarea,select,date,file,number,radio,checkbox',
-            'field_options' => 'nullable|json',
             'is_required' => 'required|boolean',
             'urutan' => 'required|integer|min:0',
             'placeholder' => 'nullable|string|max:150',
-            'validation_rules' => 'nullable|string|max:255',
         ]);
+
+        // Process Options
+        $options = $request->input('options', []);
+        $validated['field_options'] = !empty($options) ? array_values(array_filter($options)) : null;
+
+        // Process Validation Rules
+        $rules = [];
+        if ($request->boolean('val_numeric')) $rules[] = 'numeric';
+        if ($request->boolean('val_email')) $rules[] = 'email';
+        if ($request->boolean('val_alphabet')) $rules[] = 'alpha';
+        if ($request->filled('val_min')) $rules[] = 'min:' . $request->val_min;
+        if ($request->filled('val_max')) $rules[] = 'max:' . $request->val_max;
+
+        $validated['validation_rules'] = !empty($rules) ? implode('|', $rules) : null;
 
         $jenisSurat->fields()->create($validated);
 
@@ -40,12 +52,24 @@ class JenisSuratFieldController extends Controller
             'field_key' => 'required|string|max:50',
             'field_label' => 'required|string|max:100',
             'field_type' => 'required|in:text,textarea,select,date,file,number,radio,checkbox',
-            'field_options' => 'nullable|json',
             'is_required' => 'required|boolean',
             'urutan' => 'required|integer|min:0',
             'placeholder' => 'nullable|string|max:150',
-            'validation_rules' => 'nullable|string|max:255',
         ]);
+
+        // Process Options
+        $options = $request->input('options', []);
+        $validated['field_options'] = !empty($options) ? array_values(array_filter($options)) : null;
+
+        // Process Validation Rules
+        $rules = [];
+        if ($request->boolean('val_numeric')) $rules[] = 'numeric';
+        if ($request->boolean('val_email')) $rules[] = 'email';
+        if ($request->boolean('val_alphabet')) $rules[] = 'alpha';
+        if ($request->filled('val_min')) $rules[] = 'min:' . $request->val_min;
+        if ($request->filled('val_max')) $rules[] = 'max:' . $request->val_max;
+
+        $validated['validation_rules'] = !empty($rules) ? implode('|', $rules) : null;
 
         $field->update($validated);
 
