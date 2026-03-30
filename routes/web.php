@@ -67,12 +67,7 @@ Route::middleware(['auth', 'masyarakat'])->prefix('akun')->name('masyarakat.')->
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        if (Auth::user()->role === 'masyarakat') {
-            return redirect()->route('masyarakat.home');
-        }
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -100,8 +95,10 @@ Route::middleware('auth')->group(function () {
         });
 
         // Kepala Desa Approval Dashboard
-        Route::controller(\App\Http\Controllers\Admin\KepalaDasaController::class)->prefix('kades')->name('kades.')->group(function () {
+        Route::controller(\App\Http\Controllers\Admin\KepalaDesaController::class)->prefix('kades')->name('kades.')->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/signature', [\App\Http\Controllers\Kades\KadesProfileController::class, 'signature'])->name('signature');
+            Route::post('/signature', [\App\Http\Controllers\Kades\KadesProfileController::class, 'updateSignature'])->name('signature.update');
             Route::get('/{pengajuan}', 'show')->name('show');
             Route::get('/{pengajuan}/edit-draft', 'editDraft')->name('edit-draft');
             Route::put('/{pengajuan}/update-draft', 'updateDraft')->name('update-draft');
@@ -124,6 +121,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('jabatan', \App\Http\Controllers\Admin\MasterJabatanController::class);
             Route::resource('pejabat-desa', \App\Http\Controllers\Admin\PejabatDesaController::class);
             Route::resource('penduduk', \App\Http\Controllers\Admin\PendudukController::class);
+            Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
             Route::resource('priority-bobot', \App\Http\Controllers\Admin\PriorityBobotController::class);
         });
 

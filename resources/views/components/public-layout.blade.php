@@ -21,6 +21,7 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
     </style>
+    @stack('styles')
 </head>
 
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-200 antialiased">

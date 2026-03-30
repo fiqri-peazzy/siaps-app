@@ -166,6 +166,26 @@
 
         .ttd-kosong {
             height: 70px;
+            position: relative;
+        }
+
+        .ttd-image {
+            position: absolute;
+            max-height: 80px;
+            max-width: 180px;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .stempel-image {
+            position: absolute;
+            max-height: 90px;
+            top: -15px;
+            left: 20px;
+            opacity: 0.85;
+            z-index: 1;
         }
 
         /* ===================== WATERMARK ===================== */
@@ -362,13 +382,36 @@
     <div class="ttd-wrapper">
         <p class="ttd-kota">Baturata, {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}</p>
         <p>Kepala Desa Baturata</p>
-        <div class="ttd-kosong"></div>
-        @php
-            $pejabat = \App\Models\PejabatDesa::with(['user', 'jabatan'])
-                ->where('is_aktif', 1)
-                ->whereHas('jabatan', fn($q) => $q->where('nama_jabatan', 'like', '%Kepala Desa%'))
-                ->first();
-        @endphp
+        <div class="ttd-kosong">
+            @php
+                $pejabat = \App\Models\PejabatDesa::with(['user', 'jabatan'])
+                    ->where('is_aktif', 1)
+                    ->whereHas('jabatan', fn($q) => $q->where('nama_jabatan', 'like', '%Kepala Desa%'))
+                    ->first();
+
+                $ttdBase64 = null;
+                if ($pejabat?->tanda_tangan && file_exists(storage_path('app/public/' . $pejabat->tanda_tangan))) {
+                    $type = pathinfo(storage_path('app/public/' . $pejabat->tanda_tangan), PATHINFO_EXTENSION);
+                    $data = file_get_contents(storage_path('app/public/' . $pejabat->tanda_tangan));
+                    $ttdBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                }
+
+                $stempelBase64 = null;
+                if ($pejabat?->stempel_path && file_exists(storage_path('app/public/' . $pejabat->stempel_path))) {
+                    $type = pathinfo(storage_path('app/public/' . $pejabat->stempel_path), PATHINFO_EXTENSION);
+                    $data = file_get_contents(storage_path('app/public/' . $pejabat->stempel_path));
+                    $stempelBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                }
+            @endphp
+
+            @if ($stempelBase64)
+                <img src="{{ $stempelBase64 }}" class="stempel-image">
+            @endif
+
+            @if ($ttdBase64)
+                <img src="{{ $ttdBase64 }}" class="ttd-image">
+            @endif
+        </div>
         <p class="ttd-nama">{{ $pejabat?->user?->name ?? 'KEPALA DESA BATURATA' }}</p>
         @if ($pejabat?->nip)
             <p class="ttd-nip">NIP. {{ $pejabat->nip }}</p>

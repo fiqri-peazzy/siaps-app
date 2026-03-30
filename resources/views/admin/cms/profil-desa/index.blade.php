@@ -41,7 +41,7 @@
             <div>
                 <h3
                     class="text-base font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                    📋 Informasi Umum</h3>
+                    Informasi Umum</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Desa <span
@@ -88,7 +88,7 @@
             <div>
                 <h3
                     class="text-base font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                    📞 Kontak</h3>
+                    Kontak</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telepon</label>
@@ -112,7 +112,7 @@
             <div>
                 <h3
                     class="text-base font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                    🎯 Visi & Misi</h3>
+                    Visi & Misi</h3>
                 <div class="space-y-4">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visi Desa</label>
@@ -131,7 +131,7 @@
             <div>
                 <h3
                     class="text-base font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                    🖼️ Media</h3>
+                    Media</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Logo Desa</label>
@@ -160,7 +160,7 @@
             <div>
                 <h3
                     class="text-base font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                    📊 Statistik Desa</h3>
+                    Statistik Desa</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Luas Wilayah

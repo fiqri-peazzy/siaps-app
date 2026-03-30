@@ -18,16 +18,25 @@ class PublicController extends Controller
     /** Homepage */
     public function index()
     {
-        $profil   = $this->getProfilDesa();
+        $profil   = ProfilDesa::getSingleton();
         $layanan  = JenisSurat::where('is_active', true)->take(6)->get();
-        $berita   = InformasiDesa::published()
+
+        // Data untuk slider hero (pinned atau berita terbaru)
+        $slider = InformasiDesa::published()
+            ->orderBy('is_pinned', 'desc')
+            ->latest('published_at')
+            ->take(5)
+            ->get();
+
+        $berita = InformasiDesa::published()
             ->whereIn('kategori', ['berita', 'pengumuman'])
             ->latest('published_at')
-            ->take(3)
+            ->take(6)
             ->get();
+
         $totalPenduduk = Penduduk::where('is_aktif', true)->count();
 
-        return view('public.home', compact('profil', 'layanan', 'berita', 'totalPenduduk'));
+        return view('public.home', compact('profil', 'layanan', 'berita', 'totalPenduduk', 'slider'));
     }
 
     /** Halaman profil desa */

@@ -17,7 +17,9 @@ class InformasiDesa extends Model
         'judul',
         'slug',
         'konten',
+        'tags',
         'thumbnail',
+        'gallery',
         'is_published',
         'is_pinned',
         'published_at',
@@ -29,6 +31,7 @@ class InformasiDesa extends Model
         'is_published' => 'boolean',
         'is_pinned'    => 'boolean',
         'published_at' => 'datetime',
+        'gallery'      => 'array',
     ];
 
     protected static function boot()

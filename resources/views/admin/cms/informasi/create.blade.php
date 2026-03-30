@@ -40,11 +40,11 @@
             <div class="flex items-center gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button type="submit" name="is_published" value="1"
                     class="inline-flex items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2.5 dark:bg-blue-600">
-                    🚀 Publish
+                    Publish
                 </button>
                 <button type="submit" name="is_published" value="0"
                     class="inline-flex items-center gap-2 text-gray-700 dark:text-gray-300 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 font-medium rounded-lg text-sm px-6 py-2.5">
-                    💾 Simpan Draft
+                    Simpan Draft
                 </button>
                 <a href="{{ route('admin.cms.informasi.index') }}"
                     class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400">Batal</a>

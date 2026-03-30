@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class KepalaDasaController extends Controller
+class KepalaDesaController extends Controller
 {
     /**
      * Show list of validated submissions awaiting Kepala Desa approval

@@ -40,6 +40,7 @@ class PendudukController extends Controller
             'rt_id' => 'required|exists:master_wilayah,id',
             'alamat_lengkap' => 'required|string',
             'status_penduduk' => 'required|in:tetap,sementara,tinggal',
+            'is_aktif' => 'required|boolean',
         ]);
 
         Penduduk::create($validated);
