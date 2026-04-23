@@ -91,7 +91,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/{pengajuan}/approve', 'approve')->name('approve');
             Route::post('/{pengajuan}/reject', 'reject')->name('reject');
             Route::post('/{pengajuan}/revision', 'requestRevision')->name('revision');
-            Route::post('/{pengajuan}/finalize', 'finalize')->name('finalize');
         });
 
         // Kepala Desa Approval Dashboard

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Penduduk;
+use App\Models\BiodataMasyarakat;
 use App\Models\MasterAgama;
 use App\Models\MasterPekerjaan;
 use App\Models\MasterWilayah;
@@ -78,8 +79,31 @@ class PendudukController extends Controller
 
     public function destroy(Penduduk $penduduk)
     {
-        $penduduk->delete();
-        return redirect()->route('admin.master.penduduk.index')
-            ->with('success', 'Data Penduduk berhasil dihapus.');
+        try {
+            // Check if there's a biodata linked to this penduduk
+            $biodata = BiodataMasyarakat::where('penduduk_id', $penduduk->id)->first();
+
+            if ($biodata) {
+                // Check if biodata has any active pengajuan surat
+                $activePengajuan = $biodata->pengajuan()
+                    ->whereNotIn('status', ['rejected', 'cancelled', 'completed'])
+                    ->exists();
+
+                if ($activePengajuan) {
+                    return redirect()->route('admin.master.penduduk.index')
+                        ->with('error', 'Tidak dapat menghapus penduduk. Terdapat pengajuan surat yang masih aktif. Silakan batalkan atau selesaikan pengajuan terlebih dahulu.');
+                }
+
+                // Unlink the biodata from penduduk instead of deleting it
+                $biodata->update(['penduduk_id' => null]);
+            }
+
+            $penduduk->delete();
+            return redirect()->route('admin.master.penduduk.index')
+                ->with('success', 'Data Penduduk berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.master.penduduk.index')
+                ->with('error', 'Gagal menghapus data penduduk: ' . $e->getMessage());
+        }
     }
 }

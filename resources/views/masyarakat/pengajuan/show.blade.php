@@ -19,7 +19,7 @@
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
-                    @if ($pengajuan->status === 'completed' && $pengajuan->surat_path)
+                    @if (in_array($pengajuan->status, ['ready', 'completed']) && $pengajuan->surat_path)
                         <a href="{{ Storage::url($pengajuan->surat_path) }}" target="_blank"
                             class="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-teal-200 dark:shadow-none transition-all active:scale-95">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

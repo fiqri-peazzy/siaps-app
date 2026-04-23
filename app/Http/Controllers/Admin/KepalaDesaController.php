@@ -35,7 +35,7 @@ class KepalaDesaController extends Controller
     }
 
     /**
-     * Kepala Desa Approves the draft — changes status to approved -> ready
+     * Kepala Desa Approves the draft — changes status to ready (skipping approved step)
      */
     public function approve(PengajuanSurat $pengajuan)
     {
@@ -46,9 +46,9 @@ class KepalaDesaController extends Controller
         // Generate nomor surat
         $year = now()->year;
         $month = now()->month;
-        $count = PengajuanSurat::whereYear('approved_at', $year)
-            ->whereMonth('approved_at', $month)
-            ->where('status', 'approved')
+        $count = PengajuanSurat::whereYear('ready_at', $year)
+            ->whereMonth('ready_at', $month)
+            ->where('status', 'ready')
             ->count() + 1;
 
         $nomorSurat = sprintf(
@@ -63,21 +63,23 @@ class KepalaDesaController extends Controller
         try {
             DB::beginTransaction();
 
+            // Langsung ke status ready tanpa approved (finalisasi otomatis)
             $pengajuan->update([
-                'status' => 'approved',
+                'status' => 'ready',
                 'approved_at' => now(),
                 'approved_by' => Auth::id(),
+                'ready_at' => now(),
                 'nomor_surat' => $nomorSurat,
             ]);
 
             PengajuanHistory::create([
                 'pengajuan_id' => $pengajuan->id,
                 'from_status' => 'validated',
-                'to_status' => 'approved',
+                'to_status' => 'ready',
                 'priority_score_saat_itu' => $pengajuan->priority_score,
                 'actor_id' => Auth::id(),
                 'actor_role' => 'kades',
-                'catatan' => 'Surat disetujui oleh Kepala Desa. Nomor surat: ' . $nomorSurat,
+                'catatan' => 'Surat disetujui oleh Kepala Desa dan siap diunduh. Nomor surat: ' . $nomorSurat,
                 'created_at' => now()
             ]);
 
@@ -93,8 +95,11 @@ class KepalaDesaController extends Controller
                 'surat_generated_at' => now(),
             ]);
 
+            // Send notification to user
+            $pengajuan->user->notify(new \App\Notifications\PengajuanStatusUpdated($pengajuan));
+
             DB::commit();
-            return redirect()->route('admin.kades.index')->with('success', 'Surat berhasil disetujui. Nomor: ' . $nomorSurat);
+            return redirect()->route('admin.kades.index')->with('success', 'Surat berhasil disetujui dan siap diunduh oleh warga. Nomor: ' . $nomorSurat);
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Gagal menyetujui surat: ' . $e->getMessage());

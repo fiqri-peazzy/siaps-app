@@ -228,7 +228,7 @@
                                     </td>
                                     <td class="px-6 py-5">
                                         <div class="flex items-center justify-end gap-2">
-                                            @if ($s->status === 'completed' && $s->surat_path)
+                                            @if (in_array($s->status, ['ready', 'completed']) && $s->surat_path)
                                                 <a href="{{ Storage::url($s->surat_path) }}" target="_blank"
                                                     class="inline-flex items-center justify-center p-2 bg-teal-100 dark:bg-teal-900/40 hover:bg-teal-600 hover:text-white text-teal-700 dark:text-teal-400 rounded-xl transition-all"
                                                     title="Unduh Surat (Final)">

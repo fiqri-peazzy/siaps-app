@@ -66,4 +66,9 @@ class BiodataMasyarakat extends Model
     {
         return $this->belongsTo(MasterPekerjaan::class, 'pekerjaan_id');
     }
+
+    public function pengajuan()
+    {
+        return $this->hasMany(PengajuanSurat::class, 'biodata_id');
+    }
 }

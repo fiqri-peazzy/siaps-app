@@ -50,6 +50,18 @@
                         <p class="text-sm font-bold text-sky-800 dark:text-sky-400">Draf ini menunggu tanda tangan
                             Kepala Desa.</p>
                     </div>
+                @elseif($pengajuan->status === 'ready')
+                    <div
+                        class="p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl flex items-center gap-3">
+                        <svg class="w-5 h-5 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <p class="text-sm font-bold text-emerald-800 dark:text-emerald-400">Surat siap diunduh. Nomor:
+                            <span class="font-black">{{ $pengajuan->nomor_surat }}</span>
+                        </p>
+                    </div>
                 @elseif($pengajuan->status === 'approved')
                     <div
                         class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl flex items-center gap-3">
@@ -157,8 +169,8 @@
                             @csrf
                             <button type="submit"
                                 class="w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-lg shadow-green-200 dark:shadow-none transition-all active:scale-95 uppercase tracking-wider font-black text-sm"
-                                onclick="return confirm('Setujui dan terbitkan surat ini?')">
-                                ✓ Setujui & Terbitkan Surat
+                                onclick="return confirm('Setujui surat ini? Surat akan langsung siap diunduh oleh warga.')">
+                                ✓ Setujui & Siapkan Surat
                             </button>
                         </form>
 
