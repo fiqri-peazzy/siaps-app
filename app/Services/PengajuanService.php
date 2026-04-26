@@ -14,7 +14,7 @@ class PengajuanService
      */
     public function calculatePriorityScore(BiodataMasyarakat $biodata, JenisSurat $jenisSurat, int $urgensi = 3): array
     {
-        // Journal Algorithm: Lower is Higher Priority
+        // Journal Algorithm: Higher is Higher Priority
         // Tier 1: (Jenis Surat Value) + (Urgensi Value)
 
         $jenisSuratValue = (int) $jenisSurat->base_priority; // Assigned 1-5
@@ -43,17 +43,17 @@ class PengajuanService
             ]
         ];
 
-        // Enhancement: Deduct score for special conditions (Lower = More Priority)
+        // Enhancement: Add score for special conditions (Higher = More Priority)
         $bobots = PriorityBobot::where('is_active', true)->get()->keyBy('kode');
 
         // 1. Cek Lansia (> 60 tahun)
         $usia = Carbon::parse($biodata->tanggal_lahir)->age;
         if ($usia >= 60 && isset($bobots['LANSIA'])) {
             $bonus = (float) $bobots['LANSIA']->bobot;
-            $totalScore -= $bonus; // Reduction makes it more priority
+            $totalScore += $bonus;
             $breakdown[] = [
                 'label' => 'Bonus Lansia (Usia ' . $usia . ' thn)',
-                'score' => -$bonus,
+                'score' => $bonus,
                 'type' => 'profile'
             ];
         }
@@ -61,10 +61,10 @@ class PengajuanService
         // 2. Cek Disabilitas
         if ($biodata->is_disabilitas && isset($bobots['DISABILITAS'])) {
             $bonus = (float) $bobots['DISABILITAS']->bobot;
-            $totalScore -= $bonus;
+            $totalScore += $bonus;
             $breakdown[] = [
                 'label' => 'Bonus Disabilitas',
-                'score' => -$bonus,
+                'score' => $bonus,
                 'type' => 'profile'
             ];
         }
@@ -72,10 +72,10 @@ class PengajuanService
         // 3. Cek Hamil (Khusus Perempuan)
         if ($biodata->is_hamil && $biodata->jenis_kelamin === 'P' && isset($bobots['HAMIL'])) {
             $bonus = (float) $bobots['HAMIL']->bobot;
-            $totalScore -= $bonus;
+            $totalScore += $bonus;
             $breakdown[] = [
                 'label' => 'Bonus Ibu Hamil',
-                'score' => -$bonus,
+                'score' => $bonus,
                 'type' => 'profile'
             ];
         }

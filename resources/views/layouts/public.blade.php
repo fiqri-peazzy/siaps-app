@@ -139,7 +139,7 @@
 
     {{-- MAIN CONTENT --}}
     <main class="pt-16">
-        @if (session('info'))
+        {{-- @if (session('info'))
             <div
                 class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800 px-4 py-3 text-center text-sm text-blue-700 dark:text-blue-300">
                 {{ session('info') }}
@@ -150,7 +150,7 @@
                 class="bg-green-50 dark:bg-green-900/20 border-b border-green-200 dark:border-green-800 px-4 py-3 text-center text-sm text-green-700 dark:text-green-300">
                 {{ session('success') }}
             </div>
-        @endif
+        @endif --}}
 
         {{ $slot }}
     </main>
