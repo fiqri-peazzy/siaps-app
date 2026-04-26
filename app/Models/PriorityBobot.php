@@ -13,5 +13,12 @@ class PriorityBobot extends Model
         'kode',
         'label',
         'bobot',
+        'keterangan',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'bobot' => 'decimal:2',
     ];
 }

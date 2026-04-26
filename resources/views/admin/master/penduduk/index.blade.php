@@ -293,21 +293,21 @@
                             <div>
                                 <label
                                     class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">NIK</label>
-                                <input type="text" name="nik" maxlength="16"
+                                <input type="text" name="nik" value="{{ old('nik') }}" maxlength="16"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
                             </div>
                             <div>
                                 <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">No
                                     KK</label>
-                                <input type="text" name="no_kk" maxlength="16"
+                                <input type="text" name="no_kk" value="{{ old('no_kk') }}" maxlength="16"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
                             </div>
                             <div>
                                 <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Nama
                                     Lengkap</label>
-                                <input type="text" name="nama_lengkap"
+                                <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
                             </div>
@@ -317,7 +317,7 @@
                             <div>
                                 <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Tempat
                                     Lahir</label>
-                                <input type="text" name="tempat_lahir"
+                                <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
                             </div>
@@ -325,7 +325,7 @@
                                 <label
                                     class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Tanggal
                                     Lahir</label>
-                                <input type="date" name="tanggal_lahir"
+                                <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
                             </div>
@@ -335,8 +335,8 @@
                                 <select name="jenis_kelamin"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
-                                    <option value="L">Laki-laki</option>
-                                    <option value="P">Perempuan</option>
+                                    <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
                                 </select>
                             </div>
                         </div>
@@ -349,7 +349,7 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
                                     @foreach ($agamas as $a)
-                                        <option value="{{ $a->id }}">{{ $a->nama }}</option>
+                                        <option value="{{ $a->id }}" {{ old('agama_id') == $a->id ? 'selected' : '' }}>{{ $a->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -360,7 +360,7 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
                                     @foreach ($pekerjaans as $pk)
-                                        <option value="{{ $pk->id }}">{{ $pk->nama }}</option>
+                                        <option value="{{ $pk->id }}" {{ old('pekerjaan_id') == $pk->id ? 'selected' : '' }}>{{ $pk->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -373,10 +373,10 @@
                                 <select name="status_perkawinan"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
-                                    <option value="belum_kawin">Belum Kawin</option>
-                                    <option value="kawin">Kawin</option>
-                                    <option value="cerai_hidup">Cerai Hidup</option>
-                                    <option value="cerai_mati">Cerai Mati</option>
+                                    <option value="belum_kawin" {{ old('status_perkawinan') == 'belum_kawin' ? 'selected' : '' }}>Belum Kawin</option>
+                                    <option value="kawin" {{ old('status_perkawinan') == 'kawin' ? 'selected' : '' }}>Kawin</option>
+                                    <option value="cerai_hidup" {{ old('status_perkawinan') == 'cerai_hidup' ? 'selected' : '' }}>Cerai Hidup</option>
+                                    <option value="cerai_mati" {{ old('status_perkawinan') == 'cerai_mati' ? 'selected' : '' }}>Cerai Mati</option>
                                 </select>
                             </div>
                             <div>
@@ -385,10 +385,10 @@
                                 <select name="status_dalam_kk"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
-                                    <option value="kepala_keluarga">Kepala Keluarga</option>
-                                    <option value="istri">Istri</option>
-                                    <option value="anak">Anak</option>
-                                    <option value="lainnya">Lainnya</option>
+                                    <option value="kepala_keluarga" {{ old('status_dalam_kk') == 'kepala_keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
+                                    <option value="istri" {{ old('status_dalam_kk') == 'istri' ? 'selected' : '' }}>Istri</option>
+                                    <option value="anak" {{ old('status_dalam_kk') == 'anak' ? 'selected' : '' }}>Anak</option>
+                                    <option value="lainnya" {{ old('status_dalam_kk') == 'lainnya' ? 'selected' : '' }}>Lainnya</option>
                                 </select>
                             </div>
                         </div>
@@ -401,7 +401,7 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
                                     @foreach ($rts as $rt)
-                                        <option value="{{ $rt->id }}">{{ $rt->nama }}</option>
+                                        <option value="{{ $rt->id }}" {{ old('rt_id') == $rt->id ? 'selected' : '' }}>{{ $rt->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -411,9 +411,9 @@
                                 <select name="status_penduduk"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                     required>
-                                    <option value="tetap">Tetap</option>
-                                    <option value="sementara">Sementara</option>
-                                    <option value="tinggal">Tinggal</option>
+                                    <option value="tetap" {{ old('status_penduduk') == 'tetap' ? 'selected' : '' }}>Tetap</option>
+                                    <option value="sementara" {{ old('status_penduduk') == 'sementara' ? 'selected' : '' }}>Sementara</option>
+                                    <option value="tinggal" {{ old('status_penduduk') == 'tinggal' ? 'selected' : '' }}>Tinggal</option>
                                 </select>
                             </div>
                         </div>
@@ -424,8 +424,8 @@
                                     Aktif</label>
                                 <select name="is_aktif"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all">
-                                    <option value="1">Aktif</option>
-                                    <option value="0">Nonaktif</option>
+                                    <option value="1" {{ old('is_aktif', '1') == '1' ? 'selected' : '' }}>Aktif</option>
+                                    <option value="0" {{ old('is_aktif') == '0' ? 'selected' : '' }}>Nonaktif</option>
                                 </select>
                             </div>
                             <div>
@@ -434,11 +434,11 @@
                                     Darah</label>
                                 <select name="golongan_darah"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all">
-                                    <option value="tidak_tahu">Tidak Tahu</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="AB">AB</option>
-                                    <option value="O">O</option>
+                                    <option value="tidak_tahu" {{ old('golongan_darah') == 'tidak_tahu' ? 'selected' : '' }}>Tidak Tahu</option>
+                                    <option value="A" {{ old('golongan_darah') == 'A' ? 'selected' : '' }}>A</option>
+                                    <option value="B" {{ old('golongan_darah') == 'B' ? 'selected' : '' }}>B</option>
+                                    <option value="AB" {{ old('golongan_darah') == 'AB' ? 'selected' : '' }}>AB</option>
+                                    <option value="O" {{ old('golongan_darah') == 'O' ? 'selected' : '' }}>O</option>
                                 </select>
                             </div>
                         </div>
@@ -446,7 +446,7 @@
                         <div>
                             <label
                                 class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Kewarganegaraan</label>
-                            <input type="text" name="kewarganegaraan" value="WNI"
+                            <input type="text" name="kewarganegaraan" value="{{ old('kewarganegaraan', 'WNI') }}"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
                                 required>
                         </div>
@@ -456,7 +456,7 @@
                                 Lengkap</label>
                             <textarea name="alamat_lengkap" rows="3"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all"
-                                required></textarea>
+                                required>{{ old('alamat_lengkap') }}</textarea>
                         </div>
                     </div>
                     <div

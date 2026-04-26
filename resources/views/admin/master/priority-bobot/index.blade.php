@@ -132,11 +132,10 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                                @forelse($bobots as $b)
+                                @forelse($bobots as $pb)
                                     <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                                         <td class="p-4 text-base font-medium text-gray-900 dark:text-white">
-                                            {{ $b->kategori }}</td>
-                                        {{ $pb->kategori }}</td>
+                                            {{ $pb->kategori }}</td>
                                         <td class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
                                             {{ $pb->kode }}</td>
                                         <td class="p-4 text-base font-medium text-gray-900 dark:text-white">
@@ -197,24 +196,55 @@
                     @csrf
                     <div class="p-6 space-y-4">
                         <div>
-                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Kriteria
-                                Priority</label>
-                            <input type="text" name="kriteria"
+                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">
+                                Kategori <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="kategori"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
-                                placeholder="Misal: Lansia, Disabilitas, dsb" required>
+                                placeholder="Misal: Lansia, Disabilitas, Ekonomi Lemah, dsb" required>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kelompok prioritas, contoh: Lansia, Disabilitas, Ekonomi Lemah</p>
                         </div>
                         <div>
-                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Bobot
-                                (0-100)</label>
-                            <input type="number" name="bobot" min="0" max="100"
+                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">
+                                Kode <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="kode"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
-                                placeholder="10" required>
+                                placeholder="Misal: LSK, DSB, EKL, dsb" required>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Singkatan/kode unik untuk kategori (tidak boleh sama)</p>
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">
+                                Label <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="label"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
+                                placeholder="Misal: Lansia Prioritas, Disabilitas Tinggi, dsb" required>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Nama label yang akan ditampilkan di sistem</p>
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">
+                                Bobot Prioritas <span class="text-red-500">*</span> (0-100)
+                            </label>
+                            <input type="number" name="bobot" min="0" max="100" step="0.01"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
+                                placeholder="30" required>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Semakin tinggi bobot, semakin diprioritaskan (contoh: Lansia 50, Disabilitas 40)</p>
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">
+                                Keterangan (Opsional)
+                            </label>
+                            <textarea name="keterangan" rows="3"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all outline-none"
+                                placeholder="Penjelasan tambahan tentang kategori prioritas ini..."></textarea>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Penjelasan detail tentang prioritas ini (opsional)</p>
                         </div>
                     </div>
                     <div
                         class="flex items-center p-6 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-700">
                         <button type="submit"
-                            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-sm px-6 py-3 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 transition-all shadow-lg hover:shadow-blue-500/30 shadow-blue-500/20">Simpan</button>
+                            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-sm px-6 py-3 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 transition-all shadow-lg hover:shadow-blue-500/30 shadow-blue-500/20">Simpan Bobot</button>
                         <button type="button" data-modal-hide="add-priority-modal"
                             class="py-3 px-6 text-sm font-bold text-gray-700 focus:outline-none bg-gray-100 rounded-xl border border-gray-200 hover:bg-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-600 transition-all">Batal</button>
                     </div>
@@ -248,34 +278,60 @@
                         <div class="p-6 space-y-4">
                             <div>
                                 <label
-                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Kriteria
-                                    Priority</label>
-                                <input type="text" name="kriteria" value="{{ $pb->kriteria }}"
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Kategori <span class="text-red-500">*</span></label>
+                                <input type="text" name="kategori" value="{{ $pb->kategori }}"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
-                                    required>
+                                    placeholder="Misal: Lansia, Disabilitas, dsb" required>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kelompok prioritas</p>
                             </div>
                             <div>
                                 <label
-                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Bobot</label>
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Kode <span class="text-red-500">*</span></label>
+                                <input type="text" name="kode" value="{{ $pb->kode }}"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
+                                    placeholder="Misal: LSK, DSB, EKL, dsb" required>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Singkatan/kode unik (tidak boleh duplikat)</p>
+                            </div>
+                            <div>
+                                <label
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Label <span class="text-red-500">*</span></label>
+                                <input type="text" name="label" value="{{ $pb->label }}"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
+                                    placeholder="Misal: Lansia Prioritas, dsb" required>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Nama label yang ditampilkan</p>
+                            </div>
+                            <div>
+                                <label
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Bobot Prioritas <span class="text-red-500">*</span> (0-100)</label>
                                 <input type="number" name="bobot" value="{{ $pb->bobot }}" min="0"
-                                    max="100"
+                                    max="100" step="0.01"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
                                     required>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Semakin tinggi semakin diprioritaskan</p>
                             </div>
                             <div>
                                 <label
-                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Status</label>
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Keterangan (Opsional)</label>
+                                <textarea name="keterangan" rows="3"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none"
+                                    placeholder="Penjelasan tambahan tentang kategori prioritas ini...">{{ $pb->keterangan }}</textarea>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Penjelasan detail (opsional)</p>
+                            </div>
+                            <div>
+                                <label
+                                    class="block mb-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Status <span class="text-red-500">*</span></label>
                                 <select name="is_active"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all outline-none">
-                                    <option value="1" {{ $pb->is_active ? 'selected' : '' }}>Aktif</option>
-                                    <option value="0" {{ !$pb->is_active ? 'selected' : '' }}>Nonaktif</option>
+                                    <option value="1" {{ $pb->is_active ? 'selected' : '' }}>✓ Aktif (Digunakan)</option>
+                                    <option value="0" {{ !$pb->is_active ? 'selected' : '' }}>✗ Nonaktif (Tidak Digunakan)</option>
                                 </select>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Aktif = akan digunakan dalam perhitungan prioritas</p>
                             </div>
                         </div>
                         <div
                             class="flex items-center p-6 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-700">
                             <button type="submit"
-                                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-sm px-6 py-3 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 transition-all shadow-lg hover:shadow-blue-500/30 shadow-blue-500/20">Update</button>
+                                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-sm px-6 py-3 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 transition-all shadow-lg hover:shadow-blue-500/30 shadow-blue-500/20">Update Bobot</button>
                             <button type="button" data-modal-hide="edit-priority-modal-{{ $pb->id }}"
                                 class="py-3 px-6 text-sm font-bold text-gray-700 focus:outline-none bg-gray-100 rounded-xl border border-gray-200 hover:bg-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-600 transition-all">Batal</button>
                         </div>

@@ -13,9 +13,20 @@ use App\Models\MasterWilayah;
 
 class PendudukController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $penduduks = Penduduk::with(['agama', 'pekerjaan', 'rt', 'biodata'])->latest()->paginate(10);
+        $query = Penduduk::with(['agama', 'pekerjaan', 'rt', 'biodata'])->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nik', 'like', "%{$search}%")
+                    ->orWhere('no_kk', 'like', "%{$search}%")
+                    ->orWhere('nama_lengkap', 'like', "%{$search}%");
+            });
+        }
+
+        $penduduks = $query->paginate(10)->withQueryString();
         $agamas = MasterAgama::orderBy('nama')->get();
         $pekerjaans = MasterPekerjaan::orderBy('nama')->get();
         $rts = MasterWilayah::where('tipe', 'rt')->orderBy('nama')->get();
