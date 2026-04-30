@@ -39,10 +39,15 @@ class MasterDataSeeder extends Seeder
             ['kategori' => 'status_sosial', 'kode' => 'LANSIA', 'label' => 'Usia > 60 Tahun', 'bobot' => 2.00],
             ['kategori' => 'status_sosial', 'kode' => 'DISABILITAS', 'label' => 'Penyandang Disabilitas', 'bobot' => 3.00],
             ['kategori' => 'status_sosial', 'kode' => 'HAMIL', 'label' => 'Ibu Hamil', 'bobot' => 2.50],
+            ['kategori' => 'status_sosial', 'kode' => 'MISKIN', 'label' => 'Keluarga Tidak Mampu (DTKS)', 'bobot' => 2.00],
             ['kategori' => 'aging', 'kode' => 'PER_HARI', 'label' => 'Tambahan per hari menunggu', 'bobot' => 0.10],
             ['kategori' => 'aging', 'kode' => 'MAX_AGING', 'label' => 'Maksimum bobot aging', 'bobot' => 5.00],
         ];
-        DB::table('priority_bobot')->insert($bobot);
+
+        foreach ($bobot as $b) {
+            DB::table('priority_bobot')->updateOrInsert(['kode' => $b['kode']], $b);
+        }
+
 
         // Master Jabatan
         $jabatan = [
