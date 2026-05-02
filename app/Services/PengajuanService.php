@@ -12,72 +12,70 @@ class PengajuanService
     /**
      * Hitung Skor Prioritas berdasarkan Profil Masyarakat dan Jenis Surat
      */
-    public function calculatePriorityScore(BiodataMasyarakat $biodata, JenisSurat $jenisSurat, int $urgensi = 3): array
+    public function calculatePriorityScore(BiodataMasyarakat $biodata, JenisSurat $jenisSurat, int $urgensi = 3, ?Carbon $submittedAt = null): array
     {
-        // Journal Algorithm: Higher is Higher Priority
-        // Tier 1: (Jenis Surat Value) + (Urgensi Value)
+        /**
+         * ALGORITMA PENJADWALAN PRIORITAS (HIGHER IS BETTER)
+         * Tier 1: (Jenis Surat Score + Level Urgensi Score)
+         * Aging: +1 poin per hari menunggu (menambah bobot prioritas)
+         */
 
-        $jenisSuratValue = (int) $jenisSurat->base_priority; // Assigned 1-5
-        $urgensiValue = $urgensi; // Input 1-4
+        $jenisSuratScore = (int) $jenisSurat->base_priority; // 5 (Penghasilan) s/d 1 (SKTM)
+        
+        // Invert Urgensi: 1(Sangat Mendesak)->4 pts, 4(Tidak Mendesak)->1 pt
+        $urgensiScores = [
+            1 => 4, // Sangat Mendesak
+            2 => 3, // Mendesak
+            3 => 2, // Biasa
+            4 => 1  // Tidak Mendesak
+        ];
+        $urgensiLabels = [
+            1 => 'Sangat Mendesak',
+            2 => 'Mendesak',
+            3 => 'Biasa',
+            4 => 'Tidak Mendesak'
+        ];
+        
+        $urgensiScore = $urgensiScores[$urgensi] ?? 1;
 
-        $tier1Score = $jenisSuratValue + $urgensiValue;
-        $totalScore = (float) $tier1Score;
+        $baseScore = $jenisSuratScore + $urgensiScore;
+        $totalScore = (float) $baseScore;
 
         $breakdown = [
             [
                 'label' => 'Jenis Surat (' . $jenisSurat->nama . ')',
-                'score' => $jenisSuratValue,
-                'weight' => 'P1',
+                'score' => $jenisSuratScore,
                 'type' => 'base'
             ],
             [
-                'label' => 'Tingkat Urgensi',
-                'score' => $urgensiValue,
-                'weight' => 'P1',
+                'label' => 'Level Urgensi (' . ($urgensiLabels[$urgensi] ?? 'N/A') . ')',
+                'score' => $urgensiScore,
                 'type' => 'base'
             ],
             [
-                'label' => 'Subtotal Prioritas 1',
-                'score' => $tier1Score,
+                'label' => 'Subtotal Prioritas Dasar',
+                'score' => $baseScore,
                 'type' => 'subtotal'
             ]
         ];
 
-        // Enhancement: Add score for special conditions (Higher = More Priority)
-        $bobots = PriorityBobot::where('is_active', true)->get()->keyBy('kode');
+        // Enhancement: Aging (Wait Time) - Penambahan skor per hari (Higher is Better)
+        if ($submittedAt) {
+            $bobots = PriorityBobot::where('is_active', true)->get()->keyBy('kode');
+            $perHari = isset($bobots['PER_HARI']) ? (float) $bobots['PER_HARI']->bobot : 1.0;
+            
+            $daysWaiting = floor($submittedAt->diffInDays(now()));
+            if ($daysWaiting > 0) {
+                $agingBonus = $daysWaiting * $perHari;
+                $totalScore += $agingBonus;
 
-        // 1. Cek Lansia (> 60 tahun)
-        $usia = Carbon::parse($biodata->tanggal_lahir)->age;
-        if ($usia >= 60 && isset($bobots['LANSIA'])) {
-            $bonus = (float) $bobots['LANSIA']->bobot;
-            $totalScore += $bonus;
-            $breakdown[] = [
-                'label' => 'Bonus Lansia (Usia ' . $usia . ' thn)',
-                'score' => $bonus,
-                'type' => 'profile'
-            ];
-        }
-
-        // 2. Cek Disabilitas
-        if ($biodata->is_disabilitas && isset($bobots['DISABILITAS'])) {
-            $bonus = (float) $bobots['DISABILITAS']->bobot;
-            $totalScore += $bonus;
-            $breakdown[] = [
-                'label' => 'Bonus Disabilitas',
-                'score' => $bonus,
-                'type' => 'profile'
-            ];
-        }
-
-        // 3. Cek Hamil (Khusus Perempuan)
-        if ($biodata->is_hamil && $biodata->jenis_kelamin === 'P' && isset($bobots['HAMIL'])) {
-            $bonus = (float) $bobots['HAMIL']->bobot;
-            $totalScore += $bonus;
-            $breakdown[] = [
-                'label' => 'Bonus Ibu Hamil',
-                'score' => $bonus,
-                'type' => 'profile'
-            ];
+                $breakdown[] = [
+                    'label' => 'Aging (Menunggu ' . $daysWaiting . ' hari)',
+                    'score' => $agingBonus,
+                    'type' => 'aging',
+                    'detail' => $daysWaiting . ' hari x +' . $perHari
+                ];
+            }
         }
 
         return [

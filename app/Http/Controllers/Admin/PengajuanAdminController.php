@@ -16,11 +16,14 @@ class PengajuanAdminController extends Controller
      */
     public function index()
     {
-        // Get all active submissions sorted by priority score
+        // Get all active submissions sorted by priority score (Higher is Higher Priority)
         $submissions = PengajuanSurat::with(['user', 'jenisSurat', 'biodata'])
-            ->whereNotIn('status', ['completed', 'rejected', 'cancelled'])
-            ->orderBy('priority_score', 'desc')
-            ->orderBy('submitted_at', 'asc')
+            ->join('jenis_surat', 'pengajuan_surat.jenis_surat_id', '=', 'jenis_surat.id')
+            ->select('pengajuan_surat.*')
+            ->whereNotIn('pengajuan_surat.status', ['completed', 'rejected', 'cancelled'])
+            ->orderBy('pengajuan_surat.priority_score', 'desc')
+            ->orderBy('jenis_surat.base_priority', 'desc')
+            ->orderBy('pengajuan_surat.submitted_at', 'asc')
             ->paginate(15);
 
         return view('admin.pengajuan.index', compact('submissions'));

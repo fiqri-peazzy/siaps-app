@@ -249,7 +249,7 @@ class PengajuanController extends Controller
             DB::beginTransaction();
 
             $biodata = $pengajuan->biodata;
-            $priorityData = $this->pengajuanService->calculatePriorityScore($biodata, $jenis_surat, (int) $request->urgensi);
+            $priorityData = $this->pengajuanService->calculatePriorityScore($biodata, $jenis_surat, (int) $request->urgensi, $pengajuan->submitted_at);
 
             // 2. Update Pengajuan
             $pengajuan->update([

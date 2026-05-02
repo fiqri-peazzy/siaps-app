@@ -22,6 +22,7 @@ class PengajuanSurat extends Model
         'priority_breakdown',
         'antrian_number',
         'antrian_date',
+        'urgensi',
         'status',
         'submitted_at',
         'queued_at',
