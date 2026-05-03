@@ -63,17 +63,24 @@ class PengajuanService
         if ($submittedAt) {
             $bobots = PriorityBobot::where('is_active', true)->get()->keyBy('kode');
             $perHari = isset($bobots['PER_HARI']) ? (float) $bobots['PER_HARI']->bobot : 1.0;
+            $maxAging = isset($bobots['MAX_AGING']) ? (float) $bobots['MAX_AGING']->bobot : 5.0;
             
             $daysWaiting = floor($submittedAt->diffInDays(now()));
             if ($daysWaiting > 0) {
                 $agingBonus = $daysWaiting * $perHari;
+                
+                // Cap the aging bonus if MAX_AGING is defined
+                if ($agingBonus > $maxAging) {
+                    $agingBonus = $maxAging;
+                }
+                
                 $totalScore += $agingBonus;
 
                 $breakdown[] = [
                     'label' => 'Aging (Menunggu ' . $daysWaiting . ' hari)',
                     'score' => $agingBonus,
                     'type' => 'aging',
-                    'detail' => $daysWaiting . ' hari x +' . $perHari
+                    'detail' => $agingBonus == $maxAging ? 'Maksimal bobot tercapai' : $daysWaiting . ' hari x +' . $perHari
                 ];
             }
         }

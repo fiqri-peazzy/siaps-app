@@ -40,7 +40,7 @@ class MasterDataSeeder extends Seeder
             ['kategori' => 'status_sosial', 'kode' => 'DISABILITAS', 'label' => 'Penyandang Disabilitas', 'bobot' => 3.00],
             ['kategori' => 'status_sosial', 'kode' => 'HAMIL', 'label' => 'Ibu Hamil', 'bobot' => 2.50],
             ['kategori' => 'status_sosial', 'kode' => 'MISKIN', 'label' => 'Keluarga Tidak Mampu (DTKS)', 'bobot' => 2.00],
-            ['kategori' => 'aging', 'kode' => 'PER_HARI', 'label' => 'Tambahan per hari menunggu', 'bobot' => 0.10],
+            ['kategori' => 'aging', 'kode' => 'PER_HARI', 'label' => 'Penambah nilai per hari (Aging)', 'bobot' => 1.00],
             ['kategori' => 'aging', 'kode' => 'MAX_AGING', 'label' => 'Maksimum bobot aging', 'bobot' => 5.00],
         ];
 
