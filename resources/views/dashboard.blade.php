@@ -10,6 +10,43 @@
         </div>
     </x-slot>
 
+    @if (session('success'))
+        <div id="alert-success"
+            class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 border border-green-300 dark:border-green-800"
+            role="alert">
+            <svg class="shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+            </svg>
+            <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
+            <button type="button"
+                class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
+                data-dismiss-target="#alert-success"><svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg></button>
+        </div>
+    @endif
+    @if (session('error'))
+        <div id="alert-error"
+            class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 border border-red-300 dark:border-red-800"
+            role="alert">
+            <svg class="shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
+            </svg>
+            <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
+            <button type="button"
+                class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                data-dismiss-target="#alert-error"><svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg></button>
+        </div>
+    @endif
+
     <div class="space-y-6">
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -147,7 +184,8 @@
                 <div
                     class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white shadow-xl shadow-blue-500/20 relative overflow-hidden">
                     <div class="relative z-10">
-                        <p class="text-blue-100 text-xs font-black uppercase tracking-widest mb-1">Peforma Bulan Ini</p>
+                        <p class="text-blue-100 text-xs font-black uppercase tracking-widest mb-1">Peforma Bulan Ini
+                        </p>
                         <h4 class="text-4xl font-black mb-4">{{ $stats['completed_month'] }} <span
                                 class="text-lg font-normal text-blue-200">Surat Terbit</span></h4>
                         <div
@@ -169,7 +207,8 @@
 
                 <!-- Quick Actions -->
                 <div class="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 p-6">
-                    <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-wider mb-4 px-2">Aksi
+                    <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-wider mb-4 px-2">
+                        Aksi
                         Cepat</h3>
                     <div class="grid grid-cols-2 gap-3">
                         <a href="{{ route('admin.cms.informasi.create') }}"
