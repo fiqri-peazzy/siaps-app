@@ -89,36 +89,35 @@
                                 Notifikasi
                             </div>
                             <div class="divide-y divide-gray-100 dark:divide-gray-600 max-h-96 overflow-y-auto">
-                                @forelse(auth()->user()->notifications->take(5) as $notification)
-                                    <a href="{{ $notification->data['action_url'] ?? '#' }}"
-                                        class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600">
-                                        <div class="flex-shrink-0 text-blue-600 dark:text-blue-500">
-                                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                @forelse(auth()->user()->unreadNotifications->take(5) as $notification)
+                                    <a href="{{ route('admin.notifications.read', $notification->id) }}"
+                                        class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-150 ease-in-out">
+                                        <div class="flex-shrink-0 text-blue-600 dark:text-blue-500 mt-1">
+                                            <svg class="w-8 h-8 p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-full" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
                                                 </path>
                                             </svg>
                                         </div>
                                         <div class="w-full ps-3">
-                                            <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400">
+                                            <div class="text-gray-600 text-sm mb-1.5 dark:text-gray-300">
                                                 <span
-                                                    class="font-semibold text-gray-900 dark:text-white">{{ $notification->data['title'] }}</span>:
+                                                    class="font-bold text-gray-900 dark:text-white">{{ $notification->data['title'] }}</span>:
                                                 {{ $notification->data['message'] }}
                                             </div>
-                                            <div class="text-xs text-blue-600 dark:text-blue-500">
+                                            <div class="text-xs font-medium text-blue-600 dark:text-blue-400">
                                                 {{ $notification->created_at->diffForHumans() }}</div>
                                         </div>
                                     </a>
                                 @empty
-                                    <div class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
-                                        Tidak ada notifikasi baru.
+                                    <div class="px-4 py-8 text-center">
+                                        <svg class="mx-auto h-12 w-12 text-gray-300 dark:text-gray-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                        </svg>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Tidak ada notifikasi baru</p>
                                     </div>
                                 @endforelse
                             </div>
-                            <a href="#"
-                                class="block py-2 text-sm font-medium text-center text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:underline">
-                                Lihat Semua
-                            </a>
                         </div>
                     </div>
 

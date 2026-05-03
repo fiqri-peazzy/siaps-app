@@ -75,6 +75,9 @@ Route::middleware('auth')->group(function () {
 
     // Admin Master Data
     Route::prefix('admin')->name('admin.')->group(function () {
+        // Notifications
+        Route::get('/notifications/{id}/read', [\App\Http\Controllers\Admin\NotificationController::class, 'read'])->name('notifications.read');
+
         // Biodata Validation
         Route::controller(\App\Http\Controllers\Admin\BiodataValidationController::class)->prefix('validation')->name('biodata-validation.')->group(function () {
             Route::get('/', 'index')->name('index');

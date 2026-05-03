@@ -36,21 +36,17 @@
 
         {{-- Logo --}}
         <div class="mb-8 text-center">
-            <div
-                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 shadow-lg mb-4">
-                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                </svg>
-            </div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">SIAPS</h1>
-            <p class="text-sm text-gray-500 dark:text-gray-400">Sistem Informasi Administrasi Pelayanan Surat</p>
+            <a href="/">
+                <x-application-logo class="w-24 h-24 mx-auto mb-4 drop-shadow-md" />
+            </a>
+            <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">SIAPS</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Sistem Informasi Administrasi Pelayanan Surat</p>
         </div>
 
         {{-- Card --}}
         <div class="w-full max-w-md">
             <div
-                class="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800 p-8">
+                class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-2xl rounded-3xl border border-white/20 dark:border-gray-800/50 p-8">
                 {{ $slot }}
             </div>
         </div>
