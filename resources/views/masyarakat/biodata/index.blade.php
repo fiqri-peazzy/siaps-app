@@ -459,12 +459,13 @@
 
                             {{-- KTP Upload --}}
                             <div class="space-y-3">
-                                <label
-                                    class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
-                                    Foto KTP <span class="text-red-500">*</span>
+                                <label>
+                                    <span class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Foto KTP</span>
+                                    <span class="text-xs text-gray-400 font-normal ml-1">(Opsional)</span>
                                     @if ($biodata->foto_ktp)
-                                        <span class="text-green-500 ml-1">(Sudah Ada)</span>
+                                        <span class="text-xs text-green-500 ml-1 font-semibold">(Sudah Ada)</span>
                                     @endif
+                                    <p class="text-[10px] text-gray-500 mt-1 normal-case tracking-normal">Bisa dikosongkan jika sedang mengurus surat kehilangan KTP.</p>
                                 </label>
 
                                 {{-- Preview Area --}}
@@ -521,12 +522,13 @@
 
                             {{-- KK Upload --}}
                             <div class="space-y-3">
-                                <label
-                                    class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
-                                    Foto Kartu Keluarga (KK) <span class="text-red-500">*</span>
+                                <label>
+                                    <span class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Foto Kartu Keluarga (KK)</span>
+                                    <span class="text-xs text-gray-400 font-normal ml-1">(Opsional)</span>
                                     @if ($biodata->foto_kk)
-                                        <span class="text-green-500 ml-1">(Sudah Ada)</span>
+                                        <span class="text-xs text-green-500 ml-1 font-semibold">(Sudah Ada)</span>
                                     @endif
+                                    <p class="text-[10px] text-gray-500 mt-1 normal-case tracking-normal">Bisa dikosongkan jika sedang mengurus surat kehilangan KK.</p>
                                 </label>
 
                                 <div class="relative rounded-2xl overflow-hidden border-2 transition-colors"

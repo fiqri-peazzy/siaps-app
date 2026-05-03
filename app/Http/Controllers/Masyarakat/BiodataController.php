@@ -29,9 +29,6 @@ class BiodataController extends Controller
     {
         $user = Auth::user();
         $biodata = BiodataMasyarakat::firstOrNew(['user_id' => $user->id]);
-        $isFotoKtpRequired = !$biodata->exists || !$biodata->foto_ktp;
-        $isFotoKkRequired  = !$biodata->exists || !$biodata->foto_kk;
-
         $request->validate([
             'nik'               => 'required|digits:16',
             'no_kk'             => 'required|digits:16',
@@ -44,13 +41,11 @@ class BiodataController extends Controller
             'pekerjaan_id'      => 'required|exists:master_pekerjaan,id',
             'rt_id'             => 'required|exists:master_wilayah,id',
             'alamat_lengkap'    => 'required|string|min:10',
-            'foto_ktp'          => ($isFotoKtpRequired ? 'required|' : 'nullable|') . 'image|mimes:jpg,jpeg,png|max:2048',
-            'foto_kk'           => ($isFotoKkRequired  ? 'required|' : 'nullable|') . 'image|mimes:jpg,jpeg,png|max:2048',
+            'foto_ktp'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto_kk'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'nik.digits'         => 'NIK harus terdiri dari 16 digit angka.',
             'tanggal_lahir.before' => 'Tanggal lahir harus sebelum hari ini.',
-            'foto_ktp.required'  => 'Foto KTP wajib diunggah.',
-            'foto_kk.required'   => 'Foto KK wajib diunggah.',
             'foto_ktp.max'       => 'Ukuran foto KTP maksimal 2MB.',
             'foto_kk.max'        => 'Ukuran foto KK maksimal 2MB.',
         ]);
