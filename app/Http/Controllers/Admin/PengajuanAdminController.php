@@ -69,6 +69,8 @@ class PengajuanAdminController extends Controller
                 'created_at' => now()
             ]);
 
+
+
             DB::commit();
             return back()->with('success', 'Pengajuan sedang diproses.');
         } catch (\Exception $e) {
@@ -133,6 +135,8 @@ class PengajuanAdminController extends Controller
                 'created_at' => now()
             ]);
 
+
+
             \Illuminate\Support\Facades\DB::commit();
             return redirect()->route('admin.pengajuan.index')->with('success', 'Pengajuan divalidasi. Draf surat berhasil dibuat.');
         } catch (\Exception $e) {
@@ -175,6 +179,8 @@ class PengajuanAdminController extends Controller
                 'catatan' => 'Pengajuan ditolak: ' . $request->reason,
                 'created_at' => now()
             ]);
+
+
 
             DB::commit();
             return redirect()->route('admin.pengajuan.index')->with('success', 'Pengajuan telah ditolak.');
@@ -226,6 +232,8 @@ class PengajuanAdminController extends Controller
                 'catatan' => 'Admin meminta revisi: ' . substr($request->catatan_revisi, 0, 50) . '...',
                 'created_at' => now()
             ]);
+
+
 
             DB::commit();
             return redirect()->route('admin.pengajuan.index')->with('success', 'Permintaan revisi telah dikirim ke pemohon.');

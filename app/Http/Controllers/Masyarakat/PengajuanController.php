@@ -166,6 +166,8 @@ class PengajuanController extends Controller
             // 6. Notify Admin (To be handled by NewPengajuanNotification)
             // TODO: Dispatch notification
 
+
+
             DB::commit();
 
             return redirect()->route('masyarakat.pengajuan.index')
@@ -315,6 +317,8 @@ class PengajuanController extends Controller
                 'catatan' => 'Pemohon telah mengirimkan revisi pengajuan.',
                 'created_at' => now(),
             ]);
+
+
 
             DB::commit();
 

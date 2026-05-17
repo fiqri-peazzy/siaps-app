@@ -98,6 +98,15 @@ class KepalaDesaController extends Controller
             // Send notification to user
             $pengajuan->user->notify(new \App\Notifications\PengajuanStatusUpdated($pengajuan));
 
+            // Send WA Notification
+            $user = $pengajuan->user;
+            if ($user && !empty($user->phone)) {
+                $jenisSurat = $pengajuan->jenisSurat->nama;
+                $userName = $user->biodata ? $user->biodata->nama_lengkap : $user->name;
+                $message = "Halo {$userName},\n\nSelamat! Pengajuan surat {$jenisSurat} Anda (Kode: *{$pengajuan->kode_pengajuan}*) telah disetujui dan ditandatangani oleh Kepala Desa. Surat sudah siap.\n\nTerima kasih,\nAdmin SIAPS";
+                \App\Jobs\SendWhatsAppNotification::dispatch($user->phone, $message);
+            }
+
             DB::commit();
             return redirect()->route('admin.kades.index')->with('success', 'Surat berhasil disetujui dan siap diunduh oleh warga. Nomor: ' . $nomorSurat);
         } catch (\Exception $e) {
@@ -134,6 +143,8 @@ class KepalaDesaController extends Controller
                 'catatan' => 'Ditolak oleh Kepala Desa. Alasan: ' . $request->reason,
                 'created_at' => now()
             ]);
+
+
 
             DB::commit();
             return redirect()->route('admin.kades.index')->with('success', 'Surat telah ditolak.');

@@ -38,8 +38,9 @@ class OtpService
         // For development: log the OTP instead of sending via WhatsApp/SMS
         Log::info("OTP [{$purpose}] untuk {$phone}: {$otp} (berlaku " . self::OTP_EXPIRY_MINUTES . " menit)");
 
-        // TODO: Send via WhatsApp/SMS gateway in production
-        // $this->sendWhatsApp($phone, $otp);
+        // Send via WhatsApp/SMS gateway
+        $message = "Halo,\n\nKode OTP Anda untuk {$purpose} adalah: *{$otp}*.\n\nKode ini berlaku selama " . self::OTP_EXPIRY_MINUTES . " menit. JANGAN BERIKAN KODE INI KEPADA SIAPAPUN, termasuk pihak admin.\n\nTerima kasih,\nAdmin SIAPS";
+        \App\Jobs\SendWhatsAppNotification::dispatch($phone, $message);
 
         return $otp;
     }

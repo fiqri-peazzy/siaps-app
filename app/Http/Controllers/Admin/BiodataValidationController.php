@@ -59,6 +59,14 @@ class BiodataValidationController extends Controller
                 'verified_at' => now(),
             ]);
 
+            // Send WA Notification
+            $user = $biodata->user;
+            if ($user && !empty($user->phone)) {
+                $userName = $biodata->nama_lengkap ?? $user->name;
+                $message = "Halo {$userName},\n\nPembaruan biodata Anda telah divalidasi dan disetujui oleh Admin. Data Anda kini sudah tersinkronisasi dengan sistem kependudukan.\n\nTerima kasih,\nAdmin SIAPS";
+                \App\Jobs\SendWhatsAppNotification::dispatch($user->phone, $message);
+            }
+
             DB::commit();
 
             return redirect()->route('admin.biodata-validation.index')
@@ -81,6 +89,8 @@ class BiodataValidationController extends Controller
             'verified_by' => Auth::id(),
             'verified_at' => now(),
         ]);
+
+
 
         return redirect()->route('admin.biodata-validation.index')
             ->with('info', 'Biodata telah ditolak.');
