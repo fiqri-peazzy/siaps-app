@@ -33,34 +33,37 @@
             <div
                 class="bg-white dark:bg-gray-900 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-800 overflow-hidden">
                 {{-- Form Header --}}
-                <div
-                    class="p-8 border-b border-gray-100 dark:border-gray-800 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                        <div class="flex items-center gap-5">
-                            <div
-                                class="p-4 bg-blue-600 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-none text-white">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
+                <div class="relative border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-stretch justify-between">
+                        
+                        {{-- Left Content --}}
+                        <div class="p-8 lg:p-10 flex-1 relative z-10">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-5 mb-6">
+                                <div class="p-4 bg-blue-600 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-none text-white shrink-0">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 class="text-2xl lg:text-3xl font-black text-gray-900 dark:text-white tracking-tight">{{ $jenis_surat->nama }}</h2>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-xl">Lengkapi formulir di bawah ini dengan data yang benar untuk memperlancar proses pelayanan.</p>
+                                </div>
                             </div>
-                            <div>
-                                <h2 class="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
-                                    {{ $jenis_surat->nama }}</h2>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Lengkapi formulir di bawah ini
-                                    dengan data yang benar.</p>
+                            
+                            <div class="inline-flex items-center gap-3 px-5 py-2.5 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+                                <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-sm font-bold text-gray-700 dark:text-gray-300">Estimasi: <span class="text-amber-600 dark:text-amber-400">{{ $jenis_surat->sla_hari }} Hari Kerja</span></span>
                             </div>
                         </div>
-                        <div
-                            class="flex items-center gap-3 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/50">
-                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="currentColor"
-                                viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-sm font-bold text-blue-700 dark:text-blue-300">Estimasi:
-                                {{ $jenis_surat->sla_hari }} Hari Kerja</span>
+
+                        {{-- Right Illustration --}}
+                        <div class="hidden md:block w-1/3 lg:w-2/5 relative">
+                            {{-- Gradient overlay for smooth transition --}}
+                            <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent z-10"></div>
+                            
+                            <img src="{{ asset('images/illustrations/form_pengajuan.png') }}" alt="Ilustrasi Form" class="w-full h-full object-cover object-center opacity-90 mix-blend-multiply dark:mix-blend-normal">
                         </div>
                     </div>
                 </div>
