@@ -41,7 +41,7 @@ class MasterDataSeeder extends Seeder
             ['kategori' => 'status_sosial', 'kode' => 'HAMIL', 'label' => 'Ibu Hamil', 'bobot' => 2.50],
             ['kategori' => 'status_sosial', 'kode' => 'MISKIN', 'label' => 'Keluarga Tidak Mampu (DTKS)', 'bobot' => 2.00],
             ['kategori' => 'aging', 'kode' => 'PER_HARI', 'label' => 'Penambah nilai per hari (Aging)', 'bobot' => 1.00],
-            ['kategori' => 'aging', 'kode' => 'MAX_AGING', 'label' => 'Maksimum bobot aging', 'bobot' => 5.00],
+            ['kategori' => 'aging', 'kode' => 'MAX_AGING', 'label' => 'Maksimum bobot aging', 'bobot' => 100.00],
         ];
 
         foreach ($bobot as $b) {

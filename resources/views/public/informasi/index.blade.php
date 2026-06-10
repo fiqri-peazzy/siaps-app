@@ -1,14 +1,18 @@
 <x-public-layout>
     @section('title', 'Informasi Desa')
 
-    <section class="relative bg-blue-700 py-24 px-4 overflow-hidden">
-        <div class="absolute inset-0 opacity-10"
-            style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+    <section class="relative py-32 lg:py-40 px-4 overflow-hidden flex items-center min-h-[50vh]">
+        <div class="absolute inset-0">
+            <img src="{{ asset('images/banners/warta_desa.png') }}" class="w-full h-full object-cover object-center" alt="Banner Warta Desa">
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-950/95 via-indigo-900/70 to-transparent"></div>
         </div>
-        <div class="relative max-w-7xl mx-auto text-center">
-            <h1 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Warta Desa & Pengumuman</h1>
-            <p class="text-blue-100 text-lg max-w-2xl mx-auto">Pantau terus perkembangan, pengumuman, dan berita terbaru
-                dari {{ $profil->nama_desa ?? 'desa kami' }}.</p>
+        <div class="relative max-w-7xl mx-auto w-full z-10">
+            <div class="max-w-3xl">
+                <span class="inline-block py-1.5 px-4 rounded-full bg-indigo-600/80 backdrop-blur-md text-white text-xs font-black tracking-widest uppercase mb-6 border border-indigo-400/30 shadow-lg">Informasi Desa</span>
+                <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight leading-tight drop-shadow-xl">Warta Desa & Pengumuman</h1>
+                <p class="text-indigo-100 text-lg md:text-xl font-medium drop-shadow-md leading-relaxed">Pantau terus perkembangan, pengumuman, dan berita terbaru
+                    dari {{ $profil->nama_desa ?? 'desa kami' }}.</p>
+            </div>
         </div>
     </section>
 
